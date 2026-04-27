@@ -109,10 +109,46 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.5) hsl(240 10% 6%);
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Webkit scrollbar — page & modal */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(240 10% 6%);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--primary) / 0.7),
+      hsl(var(--accent) / 0.5)
+    );
+    border-radius: 999px;
+    border: 1px solid hsl(240 10% 10%);
+    transition: background 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--primary)),
+      hsl(var(--accent) / 0.8)
+    );
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 }
 
