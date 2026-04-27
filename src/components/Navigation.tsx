@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, PhoneCall, X } from "lucide-react";
+import { Menu, PhoneCall, FolderKanban, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import ContactModal from "./ContactModal";
 
@@ -20,9 +20,7 @@ const Navigation = () => {
   }, []);
 
   const navItems = [
-    { label: "Home", href: "/", path: "/" },
     { label: "Projects", href: "/projects", path: "/projects" },
-    { label: "Achievements", href: "/achievements", path: "/achievements" },
   ];
 
   return (
@@ -43,59 +41,45 @@ const Navigation = () => {
             Joel.dev
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => {
-              if (item.path === "/achievements" || item.path === "/projects") {
-                return (
-                  <Link
-                    key={item.label}
-                    to={item.path}
-                    className="text-muted-foreground hover:text-foreground smooth-transition relative group"
-                  >
-                    {item.label}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full smooth-transition" />
-                  </Link>
-                );
-              }
-              return (
-                <a
-                  key={item.label}
-                  href={`${item.path}`}
-                  className="text-muted-foreground hover:text-foreground smooth-transition relative group"
-                >
-                  {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full smooth-transition" />
-                </a>
-              );
-            })}
-          </div>
-
           {/* CTA Button */}
-          <div className="hidden md:block">
+          <div className="flex gap-8">
+            {/* Desktop Navigation */}
+            <div className="flex items-center space-x-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground smooth-transition relative group"
+                >
+                  <FolderKanban />
+                  <p className="hidden md:block">{item.label}</p>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full smooth-transition" />
+                </Link>
+              ))}
+            </div>
             <Button
               variant="outline"
               className="smooth-transition hover:glow-effect"
               onClick={() => setIsContactModalOpen(true)}
             >
               <PhoneCall />
-              Contact
+              <p className="hidden md:block">Contact</p>
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
-          <Button
+          {/* <Button
             variant="ghost"
             size="icon"
             className="md:hidden"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          </Button> */}
         </div>
 
         {/* Mobile Navigation */}
-        {isOpen && (
+        {/* {isOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-border">
             <div className="px-6 py-4 space-y-4">
               {navItems.map((item) => (
@@ -108,7 +92,7 @@ const Navigation = () => {
                   {item.label}
                 </Link>
               ))}
-              <Button 
+              <Button
                 className="w-full mt-4"
                 onClick={() => {
                   setIsOpen(false);
@@ -119,12 +103,12 @@ const Navigation = () => {
               </Button>
             </div>
           </div>
-        )}
+        )} */}
       </div>
 
-      <ContactModal 
-        isOpen={isContactModalOpen} 
-        onOpenChange={setIsContactModalOpen} 
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onOpenChange={setIsContactModalOpen}
       />
     </nav>
   );

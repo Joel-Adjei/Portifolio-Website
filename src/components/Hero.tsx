@@ -7,7 +7,7 @@ import { objects } from "@/assets/assets";
 
 const Hero = () => {
   return (
-    <section className="min-h-dvh md:min-h-[670px] flex items-center lg:items-end justify-center relative overflow-hidden pt-20 md:pt-0">
+    <section className="min-h-dvh md:min-h-[670px] flex items-center lg:items-end justify-center relative overflow-hidden ">
       {/* Background gradient overlay */}
       {/* <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-secondary/85" /> */}
       <img
@@ -19,7 +19,7 @@ const Hero = () => {
         className="absolute w-[900px] rotate-180 object-contain -top-0 -left-[20%] opacity-5"
       />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 relative z-10 pt-24 md:pt-20 lg:pt-0">
         <div className="flex flex-col lg:flex-row items-center lg:items-end justify-center md:pt-[80px] lg:pt-0 ">
           {/* Content */}
           <div className="space-y-8 md:self-center slide-up md:pl-10 text-center lg:text-left ">

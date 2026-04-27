@@ -1,10 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Github, ExternalLink, Calendar, User } from "lucide-react";
+import {
+  ArrowLeft,
+  Github,
+  ExternalLink,
+  Calendar,
+  User,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+} from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import {projectDetails} from "@/data/project-details";
-import { useEffect } from "react";
+import { projectDetails } from "@/data/project-details";
+import { useEffect, useState } from "react";
+
+const getYouTubeId = (url: string) => {
+  const match = url.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+  );
+  return match ? match[1] : null;
+};
 
 const ProjectDetail = () => {
   const navigate = useNavigate();
@@ -15,8 +31,13 @@ const ProjectDetail = () => {
     window.scrollTo(0, 0);
   }, []);
 
-
   const project = projectDetails[id || "1"];
+  const images = project?.images?.length ? project.images : [project?.image];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const prev = () =>
+    setCurrentIndex((i) => (i - 1 + images.length) % images.length);
+  const next = () => setCurrentIndex((i) => (i + 1) % images.length);
+  const videoId = project?.videoUrl ? getYouTubeId(project.videoUrl) : null;
 
   if (!project) {
     return (
@@ -31,25 +52,30 @@ const ProjectDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate(-1)}
-            className="smooth-transition hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Portfolio
-          </Button>
-        </div>
-      </nav>
+      {/* Back button */}
 
       {/* Hero Section */}
-      <section className="py-7">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 slide-up">
+      <section className="">
+        <div className="container relative  overflow-hidden">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="absolute h-full w-full left-0 object-cover top-0 z-0 opacity-30 lg:opacity-100"
+          />
+          <div className="h-[620px] w-full bg-gradient-to-t from-black to-black/0 left-0 absolute bottom-0 z-10" />
+
+          <div className="absolute top-14 left-0 px-6 py-4">
+            <Button
+              variant="ghost"
+              onClick={() => navigate(-1)}
+              className="smooth-transition hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Portfolio
+            </Button>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center mt-36 pb-7  z-20">
+            <div className="space-y-6 slide-up  z-20">
               <div className="space-y-4">
                 <Badge variant="secondary" className="w-fit">
                   {project.category}
@@ -57,30 +83,48 @@ const ProjectDetail = () => {
                 <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
                   {project.title}
                 </h1>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-lg text-white leading-relaxed">
                   {project.description}
                 </p>
               </div>
-              
+
               <div className="flex flex-wrap gap-4">
-                {project.type === 'development' ? (
+                {project.type === "development" ? (
                   <>
-                    <Button size="lg" className="glow-effect group" onClick={() => window.open(project.liveUrl, '_blank')}>
+                    <Button
+                      size="lg"
+                      className="glow-effect group"
+                      onClick={() => window.open(project.liveUrl, "_blank")}
+                    >
                       <ExternalLink className="mr-2 h-4 w-4" />
                       View Live Site
                     </Button>
-                    <Button variant="outline" size="lg" className="smooth-transition hover:glow-effect" onClick={() => window.open(project.githubUrl, '_blank')}>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="smooth-transition hover:glow-effect"
+                      onClick={() => window.open(project.githubUrl, "_blank")}
+                    >
                       <Github className="mr-2 h-4 w-4" />
                       View Code
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button size="lg" className="glow-effect group" onClick={() => window.open(project.behanceUrl, '_blank')}>
+                    <Button
+                      size="lg"
+                      className="glow-effect group"
+                      onClick={() => window.open(project.behanceUrl, "_blank")}
+                    >
                       <ExternalLink className="mr-2 h-4 w-4" />
                       View on Behance
                     </Button>
-                    <Button variant="outline" size="lg" className="smooth-transition hover:glow-effect" onClick={() => window.open(project.previewUrl, '_blank')}>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="smooth-transition hover:glow-effect"
+                      onClick={() => window.open(project.previewUrl, "_blank")}
+                    >
                       <ExternalLink className="mr-2 h-4 w-4" />
                       Live Preview
                     </Button>
@@ -88,15 +132,47 @@ const ProjectDetail = () => {
                 )}
               </div>
             </div>
-            
-            <div className="relative fade-in" style={{ animationDelay: '0.3s' }}>
-              <Card className="overflow-hidden border-2 border-primary/20 glow-effect">
+
+            <div
+              className="relative fade-in z-20"
+              style={{ animationDelay: "0.3s" }}
+            >
+              <Card className="overflow-hidden border-2 border-primary/20 glow-effect z-20">
                 <div className="aspect-video relative">
                   <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
+                    src={images[currentIndex]}
+                    alt={`${project.title} ${currentIndex + 1}`}
+                    className="w-full h-full object-cover transition-opacity duration-500"
                   />
+                  {images.length > 1 && (
+                    <>
+                      <button
+                        onClick={prev}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 transition-all"
+                      >
+                        <ChevronLeft className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={next}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 transition-all"
+                      >
+                        <ChevronRight className="h-5 w-5" />
+                      </button>
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                        {images.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setCurrentIndex(i)}
+                            className={`h-1.5 rounded-full transition-all ${
+                              i === currentIndex
+                                ? "w-5 bg-white"
+                                : "w-1.5 bg-white/50"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               </Card>
             </div>
@@ -116,20 +192,43 @@ const ProjectDetail = () => {
                   {project.longDescription}
                 </p>
               </div>
+
+              {/* Video Demo */}
+              {videoId && (
+                <section className="py-16">
+                  <div className=" mx-auto px-6">
+                    <div className="flex items-center gap-3 mb-8">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/30">
+                        <Play className="h-4 w-4 text-primary fill-primary" />
+                      </div>
+                      <h2 className="text-3xl font-bold">Video Demo</h2>
+                    </div>
+                    <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-[0_0_40px_rgba(var(--primary-rgb),0.15)] aspect-video w-full max-w-4xl mx-auto">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${videoId}`}
+                        title={`${project.title} demo`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
+                    </div>
+                  </div>
+                </section>
+              )}
             </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
               <Card className="p-6 space-y-4 skill-card">
                 <h3 className="text-xl font-semibold">Project Details</h3>
-                
+
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Date:</span>
                     <span>{new Date(project.date).toLocaleDateString()}</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Client:</span>
@@ -152,20 +251,20 @@ const ProjectDetail = () => {
               <Card className="p-6 space-y-4 skill-card">
                 <h3 className="text-xl font-semibold">Links</h3>
                 <div className="space-y-2">
-                  {project.type === 'development' ? (
+                  {project.type === "development" ? (
                     <>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full justify-start"
-                        onClick={() => window.open(project.liveUrl, '_blank')}
+                        onClick={() => window.open(project.liveUrl, "_blank")}
                       >
                         <ExternalLink className="mr-2 h-4 w-4" />
                         Live Demo
                       </Button>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full justify-start"
-                        onClick={() => window.open(project.githubUrl, '_blank')}
+                        onClick={() => window.open(project.githubUrl, "_blank")}
                       >
                         <Github className="mr-2 h-4 w-4" />
                         Source Code
@@ -173,18 +272,22 @@ const ProjectDetail = () => {
                     </>
                   ) : (
                     <>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full justify-start"
-                        onClick={() => window.open(project.behanceUrl, '_blank')}
+                        onClick={() =>
+                          window.open(project.behanceUrl, "_blank")
+                        }
                       >
                         <ExternalLink className="mr-2 h-4 w-4" />
                         View on Behance
                       </Button>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full justify-start"
-                        onClick={() => window.open(project.previewUrl, '_blank')}
+                        onClick={() =>
+                          window.open(project.previewUrl, "_blank")
+                        }
                       >
                         <ExternalLink className="mr-2 h-4 w-4" />
                         Live Preview
