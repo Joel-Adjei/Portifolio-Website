@@ -1,9 +1,17 @@
-import { Github, Linkedin, Twitter, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Twitter,
+  Mail,
+  Phone,
+  MapPin,
+  ExternalLink,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Projects", href: "/projects" },
@@ -14,12 +22,20 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: Github, href: "https://github.com/joel-adjei", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com/in/joel-adjei", label: "LinkedIn" },
+    {
+      icon: Linkedin,
+      href: "https://linkedin.com/in/joel-adjei",
+      label: "LinkedIn",
+    },
     { icon: Twitter, href: "https://twitter.com/joel_adjei", label: "Twitter" },
   ];
 
   const contactInfo = [
-    { icon: Mail, value: "joeladjei01@gmail.com", href: "mailto:joeladjei01@gmail.com" },
+    {
+      icon: Mail,
+      value: "joeladjei01@gmail.com",
+      href: "mailto:joeladjei01@gmail.com",
+    },
     { icon: Phone, value: "+233 531 547-562", href: "tel:+233531547562" },
     { icon: MapPin, value: "Accra, Ghana", href: "#" },
   ];
@@ -38,15 +54,19 @@ const Footer = () => {
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="container mx-auto px-6 lg:px-[76px] relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
           {/* Brand Column */}
           <div className="space-y-6">
-            <Link to="/" className="font-bold text-2xl hero-text hover:text-primary smooth-transition inline-block">
+            <Link
+              to="/"
+              className="font-bold text-2xl hero-text hover:text-primary smooth-transition inline-block"
+            >
               Joel.dev
             </Link>
             <p className="text-muted-foreground leading-relaxed max-w-xs">
-              Software Engineer & Graphic Designer dedicated to building exceptional digital experiences 
-              with a focus on clean code and stunning aesthetics.
+              Software Engineer & Graphic Designer dedicated to building
+              exceptional digital experiences with a focus on clean code and
+              stunning aesthetics.
             </p>
             <div className="flex gap-4">
               {socialLinks.map((social) => (
@@ -71,7 +91,7 @@ const Footer = () => {
               {navLinks.map((link) => (
                 <li key={link.label}>
                   {link.href.startsWith("/#") ? (
-                    <button 
+                    <button
                       onClick={() => handleScrollTo(link.href.substring(2))}
                       className="text-muted-foreground hover:text-primary smooth-transition flex items-center group"
                     >
@@ -79,7 +99,7 @@ const Footer = () => {
                       {link.label}
                     </button>
                   ) : (
-                    <Link 
+                    <Link
                       to={link.href}
                       className="text-muted-foreground hover:text-primary smooth-transition flex items-center group"
                     >
@@ -98,7 +118,7 @@ const Footer = () => {
             <ul className="space-y-4">
               {contactInfo.map((info, idx) => (
                 <li key={idx}>
-                  <a 
+                  <a
                     href={info.href}
                     className="flex items-center gap-3 text-muted-foreground hover:text-primary smooth-transition group"
                   >
@@ -111,29 +131,6 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-
-          {/* Newsletter/CTA */}
-          <div className="space-y-6">
-            <h4 className="text-lg font-semibold">Stay Updated</h4>
-            <p className="text-sm text-muted-foreground">
-              Subscribe to my newsletter for the latest tech insights and project updates.
-            </p>
-            <div className="flex flex-col gap-3">
-              <div className="relative">
-                <input 
-                  type="email" 
-                  placeholder="Email address"
-                  className="bg-background border border-border rounded-lg px-4 py-3 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary/20 smooth-transition"
-                />
-                <button className="absolute right-2 top-1.5 bg-primary text-primary-foreground rounded-md px-3 py-1.5 text-xs font-semibold hover:glow-effect smooth-transition">
-                  Join
-                </button>
-              </div>
-              <p className="text-[10px] text-muted-foreground italic">
-                * No spam, just pure value.
-              </p>
-            </div>
-          </div>
         </div>
 
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-muted-foreground">
@@ -141,15 +138,22 @@ const Footer = () => {
             <p>© {currentYear} Joel Adjei.</p>
             <span className="hidden md:inline">•</span>
             <p className="flex items-center gap-1">
-              Made with <span className="text-red-500 animate-pulse">❤️</span> in Accra
+              Made with <span className="text-red-500 animate-pulse">❤️</span>{" "}
+              in Accra
             </p>
           </div>
           <div className="flex gap-8">
-            <Link to="#" className="hover:text-primary smooth-transition flex items-center gap-1">
+            <Link
+              to="#"
+              className="hover:text-primary smooth-transition flex items-center gap-1"
+            >
               Privacy Policy
               <ExternalLink className="h-3 w-3" />
             </Link>
-            <Link to="#" className="hover:text-primary smooth-transition flex items-center gap-1">
+            <Link
+              to="#"
+              className="hover:text-primary smooth-transition flex items-center gap-1"
+            >
               Terms of Service
               <ExternalLink className="h-3 w-3" />
             </Link>
