@@ -258,13 +258,13 @@ const Skills = () => {
   return (
     <section
       ref={elementRef}
-      className={`relative bg-secondary/30 section-fade-in ${isVisible ? "visible" : ""}`}
+      className={`relative  bg-gradient-to-br from-primary/10 via-background to-accent/10  section-fade-in ${isVisible ? "visible" : ""}`}
     >
-      <img
+      {/* <img
         src={backgrounds.bg06}
         className="absolute object-cover w-full h-full rotate-180 opacity-5 z-0"
         alt=""
-      />
+      /> */}
       <div className="absolute top-20 left-1/4 w-72 h-72 rounded-full bg-violet-600/8 blur-3xl pointer-events-none z-0" />
       <div className="absolute bottom-20 right-1/4 w-72 h-72 rounded-full bg-sky-600/8 blur-3xl pointer-events-none z-0" />
 

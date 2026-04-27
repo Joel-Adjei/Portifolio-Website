@@ -9,6 +9,8 @@ import AllProjects from "./pages/AllProjects";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+// import BlogPage from "./pages/Blog";
+// import BlogPost from "./pages/BlogPost";
 import RootLayout from "./components/layout/RootLayout";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
             <Route path="projects" element={<AllProjects />} />
             <Route path="auth" element={<Auth />} />
             <Route path="admin" element={<Admin />} />
+            {/* <Route path="blog" element={<BlogPage />} />
+            <Route path="blog/:id" element={<BlogPost />} /> */}
           </Route>
 
           <Route path="*" element={<NotFound />} />
