@@ -5,7 +5,6 @@ import bg03 from "./bg-03.jpg";
 import bg04 from "./bg-04.jpg";
 import bg05 from "./bg-05.jpg";
 import bg06 from "./bg-06.jpg";
-import heroPlaceholder1 from "./hero-placeholder-1.jpg";
 import heroPlaceholder from "./hero-placeholder.jpeg";
 import myImg1 from "./my-img-1.png";
 import myImg from "./my-img.png";
@@ -32,7 +31,7 @@ import vscode from "./objects/vscode.png";
 
 export const backgrounds = { bg01, bg02, bg03, bg04, bg05, bg06 };
 
-export const heroes = { heroPlaceholder, heroPlaceholder1 };
+export const heroes = { heroPlaceholder };
 
 export const profile = { aboutImg, myImg, myImg1 };
 
