@@ -25,54 +25,59 @@ const Projects = () => {
     {
       id: 1,
       title: "NexGen E-Commerce",
-      description: "A premium full-stack shopping experience with real-time inventory, secure Stripe payments, and a sleek glassmorphic dashboard.",
+      description:
+        "A premium full-stack shopping experience with real-time inventory, secure Stripe payments, and a sleek glassmorphic dashboard.",
       image: projectImages.project1,
       tech: ["Next.js", "TypeScript", "Tailwind", "Stripe"],
       github: "#",
       live: "#",
       featured: true,
-      category: "development"
+      category: "development",
     },
     {
       id: 2,
       title: "Lumina Brand Identity",
-      description: "Comprehensive branding project for a tech startup, including logo design, typography systems, and high-fidelity marketing assets.",
+      description:
+        "Comprehensive branding project for a tech startup, including logo design, typography systems, and high-fidelity marketing assets.",
       image: projectImages.project2,
       tech: ["Illustrator", "Photoshop", "Figma"],
       github: "#",
       live: "#",
-      category: "design"
+      category: "design",
     },
     {
       id: 3,
       title: "Vivid UI Design System",
-      description: "A meticulously crafted design system with over 500+ components, ensuring consistency across web and mobile platforms.",
+      description:
+        "A meticulously crafted design system with over 500+ components, ensuring consistency across web and mobile platforms.",
       image: projectImages.project3,
       tech: ["Figma", "Design Tokens", "React"],
       github: "#",
       live: "#",
-      category: "design"
+      category: "design",
     },
     {
       id: 4,
       title: "Flow Task Manager",
-      description: "A collaborative productivity tool featuring real-time drag-and-drop boards, team analytics, and smart notifications.",
+      description:
+        "A collaborative productivity tool featuring real-time drag-and-drop boards, team analytics, and smart notifications.",
       image: projectImages.project4,
       tech: ["React", "Node.js", "Socket.io", "PostgreSQL"],
       github: "#",
       live: "#",
-      category: "development"
+      category: "development",
     },
     {
       id: 5,
       title: "Skyline Real Estate",
-      description: "Interactive property listing platform with 3D walkthroughs, map integration, and advanced filtering capabilities.",
+      description:
+        "Interactive property listing platform with 3D walkthroughs, map integration, and advanced filtering capabilities.",
       image: projectImages.project5,
       tech: ["Vue.js", "Three.js", "Mapbox", "Firebase"],
       github: "#",
       live: "#",
-      category: "development"
-    }
+      category: "development",
+    },
   ];
 
   useEffect(() => {
@@ -95,7 +100,10 @@ const Projects = () => {
   const scrollNext = useCallback(() => api?.scrollNext(), [api]);
 
   return (
-    <section ref={elementRef} className={`relative py-24 section-fade-in ${isVisible ? 'visible' : ''} bg-secondary/30 overflow-hidden`}>
+    <section
+      ref={elementRef}
+      className={`relative py-24 section-fade-in ${isVisible ? "visible" : ""}  bg-gradient-to-br from-primary/10 via-background to-accent/10 overflow-hidden`}
+    >
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
@@ -104,14 +112,14 @@ const Projects = () => {
 
       <div className="container relative mx-auto px-6 lg:px-[76px] z-10">
         <div className="mb-16">
-          <Header 
+          <Header
             label="Portfolio"
             mainHeader="Featured Projects"
             description="A curated showcase of my technical expertise and creative vision, bridging the gap between design and development."
           />
         </div>
-        
-        <div 
+
+        <div
           className="relative"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -133,8 +141,8 @@ const Projects = () => {
               {projects.map((project, index) => {
                 const isActive = index === current;
                 return (
-                  <CarouselItem 
-                    key={project.id} 
+                  <CarouselItem
+                    key={project.id}
                     className="pl-4 md:pl-8 basis-full sm:basis-[85%] md:basis-[65%] lg:basis-[50%] transition-all duration-700 ease-out"
                     style={{
                       transform: isActive ? "scale(1.05)" : "scale(0.9)",
@@ -174,12 +182,22 @@ const Projects = () => {
 
           {/* Mobile Controls */}
           <div className="flex justify-center gap-4 mt-8 md:hidden">
-             <Button variant="outline" size="icon" onClick={scrollPrev} className="rounded-full">
-               <ChevronLeft className="h-5 w-5" />
-             </Button>
-             <Button variant="outline" size="icon" onClick={scrollNext} className="rounded-full">
-               <ChevronRight className="h-5 w-5" />
-             </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={scrollPrev}
+              className="rounded-full"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={scrollNext}
+              className="rounded-full"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
           </div>
         </div>
 
@@ -190,19 +208,19 @@ const Projects = () => {
               key={i}
               onClick={() => api?.scrollTo(i)}
               className={`h-2.5 rounded-full smooth-transition ${
-                i === current 
-                  ? "w-10 bg-primary shadow-[0_0_15px_rgba(var(--primary),0.6)]" 
+                i === current
+                  ? "w-10 bg-primary shadow-[0_0_15px_rgba(var(--primary),0.6)]"
                   : "w-2.5 bg-primary/20 hover:bg-primary/40"
               }`}
               aria-label={`Go to project ${i + 1}`}
             />
           ))}
         </div>
-        
+
         <div className="text-center mt-20 slide-up">
-          <Button 
-            variant="ghost" 
-            size="lg" 
+          <Button
+            variant="ghost"
+            size="lg"
             onClick={() => navigate("/projects")}
             className="smooth-transition hover:bg-primary/5 group border border-primary/10 px-8 py-6 text-lg"
           >

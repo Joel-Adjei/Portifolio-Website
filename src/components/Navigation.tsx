@@ -20,7 +20,8 @@ const Navigation = () => {
   }, []);
 
   const navItems = [
-    { label: "Projects", href: "/projects", path: "/projects" },
+    { label: "Projects", href: "/projects", path: "/projects", icon: FolderKanban },
+    // { label: "Blog", href: "/blog", path: "/blog", icon: BookOpen },
   ];
 
   return (
@@ -51,7 +52,7 @@ const Navigation = () => {
                   to={item.path}
                   className="flex items-center gap-2 text-muted-foreground hover:text-foreground smooth-transition relative group"
                 >
-                  <FolderKanban />
+                  <item.icon className="w-4 h-4" />
                   <p className="hidden md:block">{item.label}</p>
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full smooth-transition" />
                 </Link>
