@@ -16,15 +16,21 @@ import project5 from "./project-5.jpg";
 import project6 from "./project-6.jpg";
 import project7 from "./project-7.png";
 
+import cloudComp from "./objects/cloud-comp.png";
 import code from "./objects/code.png";
+import code2 from "./objects/code-2.png";
+import coding from "./objects/coding.png";
 import css from "./objects/css.png";
 import cursor from "./objects/cursor.png";
+import design3d from "./objects/design-3d.png";
 import figma from "./objects/figma.png";
+import folder from "./objects/folder.png";
 import html from "./objects/html.png";
 import obj1 from "./objects/obj-1.png";
 import obj2 from "./objects/obj-2.png";
 import obj3 from "./objects/obj-3.png";
 import obj4 from "./objects/obj-4.png";
+import obj5 from "./objects/obj-5.png";
 import ps from "./objects/ps.png";
 import react from "./objects/react.png";
 import vscode from "./objects/vscode.png";
@@ -47,4 +53,4 @@ export const projects = {
 
 export const icons = { code, css, cursor, figma, html, ps, react, vscode };
 
-export const objects = { obj1, obj2, obj3, obj4 };
+export const objects = { cloudComp, code2, coding, design3d, folder, obj1, obj2, obj3, obj4, obj5 };
