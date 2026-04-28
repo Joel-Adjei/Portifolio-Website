@@ -1,18 +1,13 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ExternalLink,
-  Github,
-  Eye,
-  Code,
-  Palette,
-  ArrowLeft,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
@@ -20,10 +15,12 @@ import project4 from "@/assets/project-4.jpg";
 import project5 from "@/assets/project-5.jpg";
 import project6 from "@/assets/project-6.jpg";
 import ProjectCard from "@/components/ui/ProjectCard";
+import { backgrounds, objects } from "@/assets/assets";
 
 const AllProjects = () => {
-  const navigate = useNavigate();
   const { elementRef, isVisible } = useIntersectionObserver();
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -147,39 +144,43 @@ const AllProjects = () => {
 
   const allProjects = [...developmentProjects, ...designProjects];
 
-  const projectImages = [
-    project1,
-    project2,
-    project3,
-    project4,
-    project5,
-    project6,
-  ];
+  const filteredProjects = allProjects.filter((p) => {
+    const matchesCategory = category === "all" || p.category === category;
+    const q = search.toLowerCase();
+    const matchesSearch =
+      !q ||
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.tech.some((t) => t.toLowerCase().includes(q));
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <section className="relative overflow-hidden py-20">
-        {/* Mosaic Background */}
-        <div className="absolute inset-0 opacity-10 overflow-hidden">
-          <div className="mosaic-scroll grid grid-cols-6 grid-rows-8 h-[200%] w-full">
-            {Array.from({ length: 48 }).map((_, index) => (
-              <div key={index} className="relative overflow-hidden">
-                <img
-                  src={projectImages[index % projectImages.length]}
-                  alt=""
-                  className="w-full h-full object-cover opacity-60 hover:opacity-80 transition-opacity duration-300"
-                  style={{
-                    filter: "blur(1px)",
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+        <div className="absolute inset-0 opacity-20 overflow-hidden">
+          <img
+            src={backgrounds.bg04}
+            alt=""
+            className="w-full h-full object-cover opacity-60 hover:opacity-80 transition-opacity duration-300"
+            style={{
+              filter: "blur(1px)",
+            }}
+          />
         </div>
+        <img
+          src={objects.code2}
+          className="absolute size-[300px] lg:size-fit object-contain -right-10  -bottom-28 lg:-bottom-16 opacity-10"
+        />
+
+        <img
+          src={objects.design3d}
+          className="hidden md:block size-[300px] absolute  rotate-42 object-contain -left-10  -bottom-28 lg:-bottom-12 opacity-5"
+        />
 
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16 slide-up">
+          <div className="text-center mb- slide-up">
             <h1 className="text-4xl lg:text-6xl font-bold mb-4 hero-text">
               All Projects
             </h1>
@@ -196,55 +197,41 @@ const AllProjects = () => {
         className={`pt-10 pb-20 section-fade-in ${isVisible ? "visible" : ""}`}
       >
         <div className="container mx-auto px-6 lg:px-[76px]">
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="flex justify-between gap-4 px-3 w-full grid-cols-3 mb-8 overflow-x-auto md:overflow-auto">
-              <TabsTrigger value="all">
-                All Projects ({allProjects.length})
-              </TabsTrigger>
-              <TabsTrigger value="development">
-                Development ({developmentProjects.length})
-              </TabsTrigger>
-              <TabsTrigger value="design">
-                Design ({designProjects.length})
-              </TabsTrigger>
-            </TabsList>
+          {/* Controls */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search projects or technologies..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger className="sm:w-56">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Projects ({allProjects.length})</SelectItem>
+                <SelectItem value="development">Development ({developmentProjects.length})</SelectItem>
+                <SelectItem value="design">Design ({designProjects.length})</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-            <TabsContent value="all" className="space-y-8">
-              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {allProjects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    index={index}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="development" className="space-y-8">
-              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {developmentProjects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    index={index}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="design" className="space-y-8">
-              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {designProjects.map((project, index) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    index={index}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
+          {filteredProjects.length > 0 ? (
+            <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {filteredProjects.map((project, index) => (
+                <ProjectCard key={project.id} project={project} index={index} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground py-20">
+              No projects match your search.
+            </p>
+          )}
         </div>
       </section>
     </div>

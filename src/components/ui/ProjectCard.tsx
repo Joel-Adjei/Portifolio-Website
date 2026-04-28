@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { icons, objects } from "@/assets/assets";
 
 const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   const navigate = useNavigate();
@@ -31,17 +32,19 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         <div className="absolute top-4 right-4 flex gap-2 items-center">
           <Badge
             variant={
-              project.category === "development" ? "default" : "secondary"
+              project.category == "development" ? "default" : "secondary"
             }
             className="font-medium shadow-lg backdrop-blur-sm"
           >
             {project.category === "development" ? (
               <>
-                <Laptop className="w-3.5 h-3.5 mr-1.5" /> Development
+                Development
+                <img src={icons.code} className="w-3.5 h-3.5 ml-1.5" />
               </>
             ) : (
               <>
-                <Sparkles className="w-3.5 h-3.5 mr-1.5" /> Design
+                Design
+                <img src={objects.design3d} className="w-3.5 h-3.5 ml-1.5" />
               </>
             )}
           </Badge>
