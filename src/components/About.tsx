@@ -41,7 +41,7 @@ const About = () => {
     <>
       <section
         ref={elementRef}
-        className={`relative overflow-hidden section-fade-in ${isVisible ? "visible" : ""}`}
+        className={`relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-accent/10 section-fade-in ${isVisible ? "visible" : ""}`}
       >
         <img
           src={objects.obj3}
@@ -51,7 +51,7 @@ const About = () => {
           src={objects.obj3}
           className="absolute rotate-42 object-contain -left-48 -bottom-28 opacity-10"
         />
-        <div className="container mx-auto py-20 px-6 lg:px-[76px]">
+        <div className="container  mx-auto py-20 px-6 lg:px-[76px]">
           <div className="">
             <Header
               label={"Get to know me"}
