@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, PhoneCall, FolderKanban, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import ContactModal from "./ContactModal";
+import { objects } from "@/assets/assets";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,12 @@ const Navigation = () => {
   }, []);
 
   const navItems = [
-    { label: "Projects", href: "/projects", path: "/projects", icon: FolderKanban },
+    {
+      label: "Projects",
+      href: "/projects",
+      path: "/projects",
+      icon: FolderKanban,
+    },
     // { label: "Blog", href: "/blog", path: "/blog", icon: BookOpen },
   ];
 
@@ -57,6 +63,15 @@ const Navigation = () => {
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full smooth-transition" />
                 </Link>
               ))}
+
+              {/* <NavLink
+                to={"/projects"}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground smooth-transition relative group"
+              >
+                <img src={objects.folder} alt="Projects" className="w-5 h-5" />
+                <p className="hidden md:block">Projects</p>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full smooth-transition" />
+              </NavLink> */}
             </div>
             <Button
               variant="outline"

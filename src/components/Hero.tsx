@@ -56,6 +56,9 @@ const Hero = () => {
               <Button
                 variant="ghost"
                 size="icon"
+                onClick={() =>
+                  window.open("https://github.com/Joel-Adjei", "_blank")
+                }
                 className="hover:accent-glow smooth-transition"
               >
                 <Github className="h-5 w-5" />
@@ -63,6 +66,9 @@ const Hero = () => {
               <Button
                 variant="ghost"
                 size="icon"
+                onClick={() =>
+                  window.open("https://linkedin.com/in/joeladjei", "_blank")
+                }
                 className="hover:accent-glow smooth-transition"
               >
                 <Linkedin className="h-5 w-5" />
@@ -70,6 +76,9 @@ const Hero = () => {
               <Button
                 variant="ghost"
                 size="icon"
+                onClick={() =>
+                  (window.location.href = "mailto: joeladjei01@gmail.com ")
+                }
                 className="hover:accent-glow smooth-transition"
               >
                 <Mail className="h-5 w-5" />

@@ -21,7 +21,7 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Github, href: "https://github.com/joel-adjei", label: "GitHub" },
+    { icon: Github, href: "https://github.com/Joel-Adjei", label: "GitHub" },
     {
       icon: Linkedin,
       href: "https://linkedin.com/in/joel-adjei",
