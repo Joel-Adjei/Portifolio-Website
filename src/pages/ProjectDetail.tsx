@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { projectDetails } from "@/data/project-details";
+import { error } from "@/assets/assets";
 import { useEffect, useState } from "react";
 
 const getYouTubeId = (url: string) => {
@@ -41,10 +42,66 @@ const ProjectDetail = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Project Not Found</h1>
-          <Button onClick={() => navigate("/")}>Back to Portfolio</Button>
+      <div className="min-h-screen relative flex items-center justify-center bg-background overflow-hidden px-6">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/10 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-10 mosaic-scroll" />
+        </div>
+
+        <div className="relative z-10 max-w-2xl w-full flex flex-col items-center text-center">
+          {/* Animated Illustration */}
+          <div className="relative mb-10 group">
+            <div className="absolute inset-0 bg-accent/20 rounded-full blur-3xl scale-75 group-hover:scale-100 transition-transform duration-700" />
+            <img
+              src={error.projectNotFoundIllustration}
+              alt="Project Not Found"
+              className="w-72 md:w-96 h-auto relative z-10 drop-shadow-[0_0_30px_rgba(var(--primary),0.3)] rounded-2xl"
+            />
+          </div>
+
+          {/* Text Content */}
+          <div className="space-y-4 mb-8">
+            <h1 className="text-4xl md:text-5xl font-black hero-text tracking-tight">
+              Project Not Found
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-md mx-auto leading-relaxed">
+              It seems the project you're looking for has been moved or doesn't
+              exist in our current archives.
+            </p>
+          </div>
+
+          {/* Action Button */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
+            <Button
+              size="lg"
+              className="rounded-full px-8 h-12 text-base font-semibold glow-effect hover:scale-105 transition-all"
+              onClick={() => navigate("/")}
+            >
+              <ArrowLeft className="mr-2 h-5 w-5" />
+              Back to Portfolio
+            </Button>
+
+            <Button
+              variant="outline"
+              size="lg"
+              className="rounded-full px-8 h-12 text-base font-semibold border-white/10 hover:bg-white/5 transition-all"
+              onClick={() => navigate(-1)}
+            >
+              Go Back
+            </Button>
+          </div>
+
+          {/* Debug Info */}
+          <div className="mt-12 pt-6 border-t border-white/5 w-full">
+            <p className="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-[0.2em]">
+              Resource ID:{" "}
+              <span className="text-accent/50">{id || "undefined"}</span> •
+              Status:{" "}
+              <span className="text-destructive/50">Null Reference</span>
+            </p>
+          </div>
         </div>
       </div>
     );

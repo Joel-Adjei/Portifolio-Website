@@ -15,6 +15,8 @@ import project4 from "./project-4.jpg";
 import project5 from "./project-5.jpg";
 import project6 from "./project-6.jpg";
 import project7 from "./project-7.png";
+import notFoundIllustration from "./404-illustration.png";
+import projectNotFoundIllustration from "./project-not-found.png";
 
 import cloudComp from "./objects/cloud-comp.png";
 import code from "./objects/code.png";
@@ -38,6 +40,8 @@ import vscode from "./objects/vscode.png";
 export const backgrounds = { bg01, bg02, bg03, bg04, bg05, bg06 };
 
 export const heroes = { heroPlaceholder };
+
+export const error = { notFoundIllustration, projectNotFoundIllustration };
 
 export const profile = { aboutImg, myImg, myImg1 };
 
