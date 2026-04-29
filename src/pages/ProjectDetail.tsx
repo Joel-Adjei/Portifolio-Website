@@ -55,7 +55,7 @@ const ProjectDetail = () => {
           <div className="relative mb-10 group">
             <div className="absolute inset-0 bg-accent/20 rounded-full blur-3xl scale-75 group-hover:scale-100 transition-transform duration-700" />
             <img
-              src={error.projectNotFoundIllustration}
+              src={error.notFoundIllustration}
               alt="Project Not Found"
               className="w-72 md:w-96 h-auto relative z-10 drop-shadow-[0_0_30px_rgba(var(--primary),0.3)] rounded-2xl"
             />
