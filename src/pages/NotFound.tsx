@@ -30,26 +30,26 @@ const NotFound = () => {
           <img
             src={error.notFoundIllustration}
             alt="404 Illustration"
-            className="w-64 md:w-80 h-auto relative z-10 drop-shadow-2xl"
+            className="w-64 md:w-[400px] object-contain h-auto relative z-10 drop-shadow-2xl"
           />
         </div>
 
         {/* Error Code */}
-        <div className="relative mb-2">
+        {/* <div className="relative mb-2">
           <h1 className="text-8xl md:text-9xl font-black hero-text tracking-tighter select-none">
             404
           </h1>
           <div className="absolute -top-4 -right-4">
             <Ghost className="w-12 h-12 text-primary/40 animate-bounce" />
           </div>
-        </div>
+        </div> */}
 
         {/* Message */}
         <div className="space-y-4 mb-10 max-w-lg">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+          <h2 className="text-xl md:text-4xl font-bold text-foreground tracking-tight">
             Lost in the Digital Void?
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-md text-muted-foreground leading-normal">
             The page you're looking for seems to have drifted away. Don't worry,
             even the best explorers lose their way sometimes.
           </p>

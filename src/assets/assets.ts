@@ -16,7 +16,6 @@ import project5 from "./project-5.jpg";
 import project6 from "./project-6.jpg";
 import project7 from "./project-7.png";
 import notFoundIllustration from "./404-illustration.png";
-import projectNotFoundIllustration from "./project-not-found.png";
 
 import cloudComp from "./objects/cloud-comp.png";
 import code from "./objects/code.png";
@@ -41,7 +40,7 @@ export const backgrounds = { bg01, bg02, bg03, bg04, bg05, bg06 };
 
 export const heroes = { heroPlaceholder };
 
-export const error = { notFoundIllustration, projectNotFoundIllustration };
+export const error = { notFoundIllustration };
 
 export const profile = { aboutImg, myImg, myImg1 };
 
@@ -57,4 +56,15 @@ export const projects = {
 
 export const icons = { code, css, cursor, figma, html, ps, react, vscode };
 
-export const objects = { cloudComp, code2, coding, design3d, folder, obj1, obj2, obj3, obj4, obj5 };
+export const objects = {
+  cloudComp,
+  code2,
+  coding,
+  design3d,
+  folder,
+  obj1,
+  obj2,
+  obj3,
+  obj4,
+  obj5,
+};
