@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,17 +6,50 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useProjectsStore } from "@/stores/projectsStore";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { HiCode, HiCalendar, HiUser, HiExternalLink, HiTrash, HiPencil, HiPlus, HiX } from "react-icons/hi";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  HiCode,
+  HiCalendar,
+  HiUser,
+  HiExternalLink,
+  HiTrash,
+  HiPencil,
+  HiPlus,
+  HiX,
+} from "react-icons/hi";
 import { FaGithub } from "react-icons/fa";
 import { MdColorLens } from "react-icons/md";
 
 export default function ProjectsAdmin() {
-  const { projects, addProject, updateProject, deleteProject } = useProjectsStore();
+  const {
+    projects,
+    loading,
+    fetchProjects,
+    addProject,
+    updateProject,
+    deleteProject,
+  } = useProjectsStore();
   const [editingId, setEditingId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
 
   // Form state
   const [type, setType] = useState<"development" | "design">("development");
@@ -24,52 +57,57 @@ export default function ProjectsAdmin() {
   const [description, setDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [client, setClient] = useState("");
   const [techInput, setTechInput] = useState("");
   const [technologies, setTechnologies] = useState<string[]>([]);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [githubUrl, setGithubUrl] = useState("");
   const [liveUrl, setLiveUrl] = useState("");
   const [behanceUrl, setBehanceUrl] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const resetForm = () => {
     setTitle("");
     setDescription("");
     setLongDescription("");
     setCategory("");
-    setDate(new Date().toISOString().split('T')[0]);
+    setDate(new Date().toISOString().split("T")[0]);
     setClient("");
     setTechnologies([]);
     setTechInput("");
-    setImageUrl("");
+    setImageFile(null);
+    setImageFiles([]);
     setGithubUrl("");
     setLiveUrl("");
     setBehanceUrl("");
     setPreviewUrl("");
+    setVideoUrl("");
     setType("development");
     setEditingId(null);
   };
 
   const loadProjectForEdit = (projectId: string) => {
-    const project = projects.find(p => p.id === projectId);
+    const project = projects.find((p) => p._id === projectId);
     if (!project) return;
 
     setEditingId(projectId);
     setType(project.type as "development" | "design");
     setTitle(project.title);
     setDescription(project.description);
-    setLongDescription(project.long_description || "");
+    setLongDescription(project.longDescription);
     setCategory(project.category);
     setDate(project.date);
-    setClient(project.client || "");
-    setTechnologies(project.technologies || []);
-    setImageUrl(project.image_url || "");
-    setGithubUrl(project.github_url || "");
-    setLiveUrl(project.live_url || "");
-    setBehanceUrl(project.behance_url || "");
-    setPreviewUrl(project.preview_url || "");
+    setClient(project.client);
+    setTechnologies(project.technologies);
+    setGithubUrl(project.githubUrl || "");
+    setLiveUrl(project.liveUrl || "");
+    setBehanceUrl(project.behanceUrl || "");
+    setPreviewUrl(project.previewUrl || "");
+    setVideoUrl(project.videoUrl || "");
   };
 
   const handleAddTechnology = () => {
@@ -80,56 +118,80 @@ export default function ProjectsAdmin() {
   };
 
   const handleRemoveTechnology = (tech: string) => {
-    setTechnologies(technologies.filter(t => t !== tech));
+    setTechnologies(technologies.filter((t) => t !== tech));
   };
 
-  const handleSubmit = () => {
-    if (!title || !description || !category) {
-      toast({ 
-        title: "Error", 
+  const handleSubmit = async () => {
+    if (!title || !description || !category || !imageFile) {
+      toast({
+        title: "Error",
         description: "Please fill in all required fields",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
 
-    const projectData = {
-      title,
-      description,
-      long_description: longDescription,
-      category,
-      type,
-      date,
-      client,
-      technologies,
-      image_url: imageUrl,
-      github_url: type === "development" ? githubUrl : undefined,
-      live_url: type === "development" ? liveUrl : undefined,
-      behance_url: type === "design" ? behanceUrl : undefined,
-      preview_url: type === "design" ? previewUrl : undefined,
-    };
+    setSubmitting(true);
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("longDescription", longDescription);
+      formData.append("category", category);
+      formData.append("type", type);
+      formData.append("date", date);
+      formData.append("client", client);
+      formData.append("technologies", technologies.join(","));
+      formData.append("image", imageFile);
+      imageFiles.forEach((file) => formData.append("images", file));
+      if (githubUrl) formData.append("githubUrl", githubUrl);
+      if (liveUrl) formData.append("liveUrl", liveUrl);
+      if (behanceUrl) formData.append("behanceUrl", behanceUrl);
+      if (previewUrl) formData.append("previewUrl", previewUrl);
+      if (videoUrl) formData.append("videoUrl", videoUrl);
 
-    if (editingId) {
-      updateProject(editingId, projectData);
-      toast({ title: "Success", description: "Project updated!" });
-    } else {
-      addProject(projectData);
-      toast({ title: "Success", description: "Project added!" });
+      if (editingId) {
+        await updateProject(editingId, formData);
+        toast({ title: "Success", description: "Project updated!" });
+      } else {
+        await addProject(formData);
+        toast({ title: "Success", description: "Project added!" });
+      }
+
+      resetForm();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save project",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
     }
-    
-    resetForm();
   };
 
-  const handleDelete = (id: string) => {
-    deleteProject(id);
-    toast({ title: "Success", description: "Project deleted!" });
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteProject(id);
+      toast({ title: "Success", description: "Project deleted!" });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete project",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          {editingId ? <HiPencil className="h-5 w-5" /> : <HiPlus className="h-5 w-5" />}
+          {editingId ? (
+            <HiPencil className="h-5 w-5" />
+          ) : (
+            <HiPlus className="h-5 w-5" />
+          )}
           {editingId ? "Edit Project" : "Create New Project"}
         </CardTitle>
       </CardHeader>
@@ -259,12 +321,35 @@ export default function ProjectsAdmin() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">Image URL</Label>
+              <Label htmlFor="image">Cover Image *</Label>
               <Input
-                id="imageUrl"
-                placeholder="https://example.com/image.jpg"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="images">Additional Images</Label>
+              <Input
+                id="images"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) =>
+                  setImageFiles(Array.from(e.target.files || []))
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="videoUrl">Video URL</Label>
+              <Input
+                id="videoUrl"
+                placeholder="https://youtube.com/watch?v=..."
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
               />
             </div>
 
@@ -275,7 +360,10 @@ export default function ProjectsAdmin() {
                   placeholder="Add technology"
                   value={techInput}
                   onChange={(e) => setTechInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTechnology())}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" &&
+                    (e.preventDefault(), handleAddTechnology())
+                  }
                 />
                 <Button type="button" onClick={handleAddTechnology} size="icon">
                   <HiPlus className="h-4 w-4" />
@@ -308,7 +396,10 @@ export default function ProjectsAdmin() {
             {type === "development" ? (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="githubUrl" className="flex items-center gap-2">
+                  <Label
+                    htmlFor="githubUrl"
+                    className="flex items-center gap-2"
+                  >
                     <FaGithub className="h-4 w-4" />
                     GitHub URL
                   </Label>
@@ -335,7 +426,10 @@ export default function ProjectsAdmin() {
             ) : (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="behanceUrl" className="flex items-center gap-2">
+                  <Label
+                    htmlFor="behanceUrl"
+                    className="flex items-center gap-2"
+                  >
                     <HiExternalLink className="h-4 w-4" />
                     Behance URL
                   </Label>
@@ -347,7 +441,10 @@ export default function ProjectsAdmin() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="previewUrl" className="flex items-center gap-2">
+                  <Label
+                    htmlFor="previewUrl"
+                    className="flex items-center gap-2"
+                  >
                     <HiExternalLink className="h-4 w-4" />
                     Preview URL
                   </Label>
@@ -365,11 +462,19 @@ export default function ProjectsAdmin() {
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button onClick={handleSubmit} className="flex-1">
-            {editingId ? "Update Project" : "Create Project"}
+          <Button
+            onClick={handleSubmit}
+            className="flex-1"
+            disabled={submitting}
+          >
+            {submitting
+              ? "Saving..."
+              : editingId
+                ? "Update Project"
+                : "Create Project"}
           </Button>
           {editingId && (
-            <Button onClick={resetForm} variant="outline">
+            <Button onClick={resetForm} variant="outline" disabled={submitting}>
               Cancel
             </Button>
           )}
@@ -391,10 +496,18 @@ export default function ProjectsAdmin() {
               </TableHeader>
               <TableBody>
                 {projects.map((project) => (
-                  <TableRow key={project.id}>
-                    <TableCell className="font-medium">{project.title}</TableCell>
+                  <TableRow key={project._id}>
+                    <TableCell className="font-medium">
+                      {project.title}
+                    </TableCell>
                     <TableCell>
-                      <Badge variant={project.type === "development" ? "default" : "secondary"}>
+                      <Badge
+                        variant={
+                          project.type === "development"
+                            ? "default"
+                            : "secondary"
+                        }
+                      >
                         {project.type === "development" ? (
                           <HiCode className="h-3 w-3 mr-1" />
                         ) : (
@@ -404,20 +517,22 @@ export default function ProjectsAdmin() {
                       </Badge>
                     </TableCell>
                     <TableCell>{project.category}</TableCell>
-                    <TableCell>{new Date(project.date).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(project.date).toLocaleDateString()}
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => loadProjectForEdit(project.id)}
+                          onClick={() => loadProjectForEdit(project._id)}
                         >
                           <HiPencil className="h-4 w-4" />
                         </Button>
                         <Button
                           variant="destructive"
                           size="sm"
-                          onClick={() => handleDelete(project.id)}
+                          onClick={() => handleDelete(project._id)}
                         >
                           <HiTrash className="h-4 w-4" />
                         </Button>

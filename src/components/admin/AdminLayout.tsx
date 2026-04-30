@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { HiFolder, HiChatAlt2, HiLogout, HiMenu, HiX, HiChevronLeft } from "react-icons/hi";
+import {
+  HiFolder,
+  HiChatAlt2,
+  HiLogout,
+  HiMenu,
+  HiX,
+  HiChevronLeft,
+} from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
 import { useAdminStore } from "@/stores/adminStore";
+import { api } from "@/lib/api";
 import { useMessagesStore } from "@/stores/messagesStore";
 import { cn } from "@/lib/utils";
 
@@ -21,16 +29,45 @@ export default function AdminLayout() {
   const unreadCount = messages.filter((m) => !m.read).length;
 
   useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem("adminToken");
+      if (token) {
+        try {
+          const response = await api.getMe();
+          if (!response.error) {
+            setIsAdmin(true);
+          } else {
+            localStorage.removeItem("adminToken");
+            navigate("/auth");
+          }
+        } catch (error) {
+          localStorage.removeItem("adminToken");
+          navigate("/auth");
+        }
+      } else {
+        navigate("/auth");
+      }
+    };
+
     if (!isAdmin) {
-      navigate("/auth");
+      checkAuth();
     }
-  }, [isAdmin, navigate]);
+  }, [isAdmin, setIsAdmin, navigate]);
 
   if (!isAdmin) return null;
 
-  const handleSignOut = () => {
-    setIsAdmin(false);
-    navigate("/");
+  if (!isAdmin) return null;
+
+  const handleSignOut = async () => {
+    try {
+      await api.logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      localStorage.removeItem("adminToken");
+      setIsAdmin(false);
+      navigate("/");
+    }
   };
 
   return (
@@ -48,14 +85,14 @@ export default function AdminLayout() {
         className={cn(
           "fixed top-0 left-0 h-full z-30 flex flex-col bg-card border-r border-border transition-all duration-300 ease-in-out",
           collapsed ? "w-16" : "w-64",
-          mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
       >
         {/* Sidebar header */}
         <div
           className={cn(
             "flex items-center border-b border-border h-16 px-3",
-            collapsed ? "justify-center" : "justify-between"
+            collapsed ? "justify-center" : "justify-between",
           )}
         >
           {!collapsed && (
@@ -71,7 +108,7 @@ export default function AdminLayout() {
             <HiChevronLeft
               className={cn(
                 "h-4 w-4 transition-transform duration-300",
-                collapsed && "rotate-180"
+                collapsed && "rotate-180",
               )}
             />
           </button>
@@ -96,7 +133,7 @@ export default function AdminLayout() {
                   isActive
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                  collapsed && "justify-center"
+                  collapsed && "justify-center",
                 )
               }
             >
@@ -111,7 +148,7 @@ export default function AdminLayout() {
                         collapsed
                           ? "absolute -top-0.5 -right-0.5 w-4 h-4"
                           : "ml-auto w-5 h-5",
-                        isActive && "bg-primary-foreground text-primary"
+                        isActive && "bg-primary-foreground text-primary",
                       )}
                     >
                       {unreadCount}
@@ -129,7 +166,7 @@ export default function AdminLayout() {
             onClick={handleSignOut}
             className={cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors w-full",
-              collapsed && "justify-center"
+              collapsed && "justify-center",
             )}
           >
             <HiLogout className="h-5 w-5 shrink-0" />
@@ -142,7 +179,7 @@ export default function AdminLayout() {
       <div
         className={cn(
           "flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out",
-          collapsed ? "lg:ml-16" : "lg:ml-64"
+          collapsed ? "lg:ml-16" : "lg:ml-64",
         )}
       >
         {/* Mobile topbar */}

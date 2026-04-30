@@ -11,7 +11,8 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import Header from "./common/Header";
-import { projects as projectImages, backgrounds } from "@/assets/assets";
+import { backgrounds } from "@/assets/assets";
+import { useProjectsStore } from "@/stores/projectsStore";
 
 const Projects = () => {
   const navigate = useNavigate();
@@ -20,65 +21,11 @@ const Projects = () => {
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const { projects, fetchProjects } = useProjectsStore();
 
-  const projects = [
-    {
-      id: 1,
-      title: "NexGen E-Commerce",
-      description:
-        "A premium full-stack shopping experience with real-time inventory, secure Stripe payments, and a sleek glassmorphic dashboard.",
-      image: projectImages.project1,
-      tech: ["Next.js", "TypeScript", "Tailwind", "Stripe"],
-      github: "#",
-      live: "#",
-      featured: true,
-      category: "development",
-    },
-    {
-      id: 2,
-      title: "Lumina Brand Identity",
-      description:
-        "Comprehensive branding project for a tech startup, including logo design, typography systems, and high-fidelity marketing assets.",
-      image: projectImages.project2,
-      tech: ["Illustrator", "Photoshop", "Figma"],
-      github: "#",
-      live: "#",
-      category: "design",
-    },
-    {
-      id: 3,
-      title: "Vivid UI Design System",
-      description:
-        "A meticulously crafted design system with over 500+ components, ensuring consistency across web and mobile platforms.",
-      image: projectImages.project3,
-      tech: ["Figma", "Design Tokens", "React"],
-      github: "#",
-      live: "#",
-      category: "design",
-    },
-    {
-      id: 4,
-      title: "Flow Task Manager",
-      description:
-        "A collaborative productivity tool featuring real-time drag-and-drop boards, team analytics, and smart notifications.",
-      image: projectImages.project4,
-      tech: ["React", "Node.js", "Socket.io", "PostgreSQL"],
-      github: "#",
-      live: "#",
-      category: "development",
-    },
-    {
-      id: 5,
-      title: "Skyline Real Estate",
-      description:
-        "Interactive property listing platform with 3D walkthroughs, map integration, and advanced filtering capabilities.",
-      image: projectImages.project5,
-      tech: ["Vue.js", "Three.js", "Mapbox", "Firebase"],
-      github: "#",
-      live: "#",
-      category: "development",
-    },
-  ];
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
 
   useEffect(() => {
     if (!api) return;
@@ -142,7 +89,7 @@ const Projects = () => {
                 const isActive = index === current;
                 return (
                   <CarouselItem
-                    key={project.id}
+                    key={project._id}
                     className="pl-4 md:pl-8 basis-full sm:basis-[85%] md:basis-[65%] lg:basis-[50%] transition-all duration-700 ease-out"
                     style={{
                       transform: isActive ? "scale(1.05)" : "scale(0.9)",

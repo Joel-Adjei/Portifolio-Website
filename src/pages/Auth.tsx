@@ -1,33 +1,68 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminStore } from "@/stores/adminStore";
-
-const ADMIN_PASSWORD = "admin123"; // Simple password for demo
+import { api } from "@/lib/api";
 
 export default function Auth() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
-  const setIsAdmin = useAdminStore((state) => state.setIsAdmin);
+  const { isAdmin, setIsAdmin } = useAdminStore();
 
-  const handleAuth = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (password === ADMIN_PASSWORD) {
-      setIsAdmin(true);
-      toast({
-        title: "Success",
-        description: "Signed in successfully!",
-      });
+  useEffect(() => {
+    // If already admin, redirect to dashboard
+    if (isAdmin) {
       navigate("/admin/dashboard");
-    } else {
+      return;
+    }
+
+    // Check if token exists and is valid
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+      api.getMe().then((response) => {
+        if (!response.error) {
+          setIsAdmin(true);
+          navigate("/admin/dashboard");
+        }
+      });
+    }
+  }, [isAdmin, navigate, setIsAdmin]);
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await api.login(email, password);
+      if (response.error) {
+        toast({
+          title: "Error",
+          description: response.error,
+          variant: "destructive",
+        });
+      } else {
+        localStorage.setItem("adminToken", response.data!.token);
+        setIsAdmin(true);
+        toast({
+          title: "Success",
+          description: "Signed in successfully!",
+        });
+        navigate("/admin/dashboard");
+      }
+    } catch (error) {
       toast({
         title: "Error",
-        description: "Incorrect password",
+        description: "Login failed",
         variant: "destructive",
       });
     }
@@ -39,11 +74,20 @@ export default function Auth() {
         <CardHeader>
           <CardTitle>Admin Sign In</CardTitle>
           <CardDescription>
-            Enter the admin password to access the dashboard
+            Enter your admin email and password to access the dashboard
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleAuth} className="space-y-4">
+            <div>
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
             <div>
               <Input
                 type="password"

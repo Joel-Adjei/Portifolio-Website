@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { HiTrash, HiMailOpen, HiMail, HiSearch, HiX, HiChevronDown, HiChevronUp } from "react-icons/hi";
+import {
+  HiTrash,
+  HiMailOpen,
+  HiMail,
+  HiSearch,
+  HiX,
+  HiChevronDown,
+  HiChevronUp,
+} from "react-icons/hi";
 import { Input } from "@/components/ui/input";
 import { useMessagesStore, Message } from "@/stores/messagesStore";
 import { useToast } from "@/hooks/use-toast";
@@ -16,7 +24,11 @@ function formatDate(iso: string) {
   if (days === 0) return "Today";
   if (days === 1) return "Yesterday";
   if (days < 7) return `${days} days ago`;
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 function MessageRow({
@@ -32,14 +44,14 @@ function MessageRow({
 
   const handleExpand = () => {
     setExpanded((v) => !v);
-    if (!msg.read) onRead(msg.id);
+    if (!msg.read) onRead(msg._id);
   };
 
   return (
     <div
       className={cn(
         "border border-border rounded-lg transition-colors",
-        !msg.read && "border-primary/40 bg-primary/5"
+        !msg.read && "border-primary/40 bg-primary/5",
       )}
     >
       {/* Row header */}
@@ -63,7 +75,12 @@ function MessageRow({
               {msg.email}
             </span>
           </div>
-          <p className={cn("text-sm truncate text-muted-foreground", !msg.read && "text-foreground font-medium")}>
+          <p
+            className={cn(
+              "text-sm truncate text-muted-foreground",
+              !msg.read && "text-foreground font-medium",
+            )}
+          >
             {msg.subject}
           </p>
           <span className="text-xs text-muted-foreground whitespace-nowrap hidden sm:block">
@@ -74,9 +91,13 @@ function MessageRow({
         {/* Status + expand */}
         <div className="flex items-center gap-2 shrink-0">
           {!msg.read ? (
-            <Badge variant="default" className="text-xs h-5 px-1.5">New</Badge>
+            <Badge variant="default" className="text-xs h-5 px-1.5">
+              New
+            </Badge>
           ) : (
-            <Badge variant="secondary" className="text-xs h-5 px-1.5">Read</Badge>
+            <Badge variant="secondary" className="text-xs h-5 px-1.5">
+              Read
+            </Badge>
           )}
           {expanded ? (
             <HiChevronUp className="h-4 w-4 text-muted-foreground" />
@@ -91,8 +112,8 @@ function MessageRow({
         <div className="px-4 pb-4 space-y-4 border-t border-border pt-3">
           <div className="grid sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
             <span>
-              <strong className="text-foreground">From:</strong>{" "}
-              {msg.firstName} {msg.lastName} &lt;{msg.email}&gt;
+              <strong className="text-foreground">From:</strong> {msg.firstName}{" "}
+              {msg.lastName} &lt;{msg.email}&gt;
             </span>
             <span>
               <strong className="text-foreground">Received:</strong>{" "}
@@ -109,7 +130,7 @@ function MessageRow({
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onRead(msg.id);
+                  onRead(msg._id);
                 }}
               >
                 <HiMailOpen className="h-4 w-4 mr-2" />
@@ -121,7 +142,7 @@ function MessageRow({
               size="sm"
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(msg.id);
+                onDelete(msg._id);
               }}
             >
               <HiTrash className="h-4 w-4 mr-2" />
@@ -135,13 +156,18 @@ function MessageRow({
 }
 
 export default function MessagesPage() {
-  const { messages, markAsRead, deleteMessage } = useMessagesStore();
+  const { messages, loading, error, fetchMessages, markAsRead, deleteMessage } =
+    useMessagesStore();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "unread" | "read">("all");
 
-  const handleDelete = (id: string) => {
-    deleteMessage(id);
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages]);
+
+  const handleDelete = async (id: string) => {
+    await deleteMessage(id);
     toast({ title: "Message deleted" });
   };
 
@@ -213,7 +239,7 @@ export default function MessagesPage() {
                     "px-4 py-2 text-sm font-medium transition-colors capitalize flex items-center gap-1.5",
                     filter === f
                       ? "bg-primary text-primary-foreground"
-                      : "hover:bg-accent text-muted-foreground"
+                      : "hover:bg-accent text-muted-foreground",
                   )}
                 >
                   {f === "unread" ? (
@@ -242,7 +268,7 @@ export default function MessagesPage() {
           ) : (
             filtered.map((msg) => (
               <MessageRow
-                key={msg.id}
+                key={msg._id}
                 msg={msg}
                 onRead={markAsRead}
                 onDelete={handleDelete}

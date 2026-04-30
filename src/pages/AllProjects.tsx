@@ -8,150 +8,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import project1 from "@/assets/project-1.jpg";
-import project2 from "@/assets/project-2.jpg";
-import project3 from "@/assets/project-3.jpg";
-import project4 from "@/assets/project-4.jpg";
-import project5 from "@/assets/project-5.jpg";
-import project6 from "@/assets/project-6.jpg";
 import ProjectCard from "@/components/ui/ProjectCard";
 import { backgrounds, objects } from "@/assets/assets";
+import { useProjectsStore } from "@/stores/projectsStore";
 
 const AllProjects = () => {
   const { elementRef, isVisible } = useIntersectionObserver();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  const { projects, fetchProjects } = useProjectsStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    fetchProjects();
+  }, [fetchProjects]);
 
-  const developmentProjects = [
-    {
-      id: 1,
-      title: "E-Commerce Platform",
-      description:
-        "Full-stack e-commerce solution with modern payment integration, real-time inventory management, and responsive design.",
-      image: project1,
-      tech: ["React", "Node.js", "PostgreSQL", "Stripe"],
-      github: "#",
-      live: "#",
-      category: "development",
-    },
-    {
-      id: 2,
-      title: "Task Management App",
-      description:
-        "Collaborative project management tool with real-time updates, team chat, and advanced analytics dashboard.",
-      image: project2,
-      tech: ["Next.js", "TypeScript", "Prisma", "WebSocket"],
-      github: "#",
-      live: "#",
-      category: "development",
-    },
-    {
-      id: 3,
-      title: "Weather Dashboard",
-      description:
-        "Beautiful weather application with interactive maps, forecasts, and location-based recommendations.",
-      image: project3,
-      tech: ["Vue.js", "Python", "FastAPI", "Charts.js"],
-      github: "#",
-      live: "#",
-      category: "development",
-    },
-    {
-      id: 4,
-      title: "Social Media Analytics",
-      description:
-        "Comprehensive social media analytics platform with data visualization and performance insights.",
-      image: project1,
-      tech: ["React", "GraphQL", "MongoDB", "D3.js"],
-      github: "#",
-      live: "#",
-      category: "development",
-    },
-    {
-      id: 5,
-      title: "React Component Library",
-      description:
-        "Modern component library with TypeScript support, documentation, and testing utilities.",
-      image: project5,
-      tech: ["React", "TypeScript", "Storybook", "Jest"],
-      github: "#",
-      live: "#",
-      category: "development",
-    },
-  ];
-
-  const designProjects = [
-    {
-      id: 6,
-      title: "Brand Identity Design",
-      description:
-        "Complete brand identity package including logo design, color palette, typography, and brand guidelines.",
-      image: project3,
-      tech: ["Adobe Illustrator", "Photoshop", "Figma"],
-      behance: "#",
-      preview: "#",
-      category: "design",
-    },
-    {
-      id: 7,
-      title: "Motion Graphics Video",
-      description:
-        "Animated explainer video with custom illustrations, smooth transitions, and engaging storytelling.",
-      image: project4,
-      tech: ["After Effects", "Illustrator", "Premiere Pro"],
-      behance: "#",
-      preview: "#",
-      category: "design",
-    },
-    {
-      id: 8,
-      title: "Website UI/UX Design",
-      description:
-        "Modern website design with user research, wireframing, prototyping, and responsive layouts.",
-      image: project2,
-      tech: ["Figma", "Adobe XD", "Principle"],
-      behance: "#",
-      preview: "#",
-      category: "design",
-    },
-    {
-      id: 9,
-      title: "Digital Art Collection",
-      description:
-        "Creative digital artwork series featuring abstract compositions and vibrant color schemes.",
-      image: project6,
-      tech: ["Photoshop", "Procreate", "Blender"],
-      behance: "#",
-      preview: "#",
-      category: "design",
-    },
-    {
-      id: 10,
-      title: "Print Design Portfolio",
-      description:
-        "Collection of print materials including brochures, posters, business cards, and packaging design.",
-      image: project5,
-      tech: ["InDesign", "Illustrator", "Photoshop"],
-      behance: "#",
-      preview: "#",
-      category: "design",
-    },
-  ];
-
-  const allProjects = [...developmentProjects, ...designProjects];
-
-  const filteredProjects = allProjects.filter((p) => {
-    const matchesCategory = category === "all" || p.category === category;
+  const filteredProjects = projects.filter((p) => {
+    const matchesCategory = category === "all" || p.type === category;
     const q = search.toLowerCase();
     const matchesSearch =
       !q ||
       p.title.toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q) ||
-      p.tech.some((t) => t.toLowerCase().includes(q));
+      p.technologies.some((t) => t.toLowerCase().includes(q));
     return matchesCategory && matchesSearch;
   });
 
@@ -214,9 +93,15 @@ const AllProjects = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Projects ({allProjects.length})</SelectItem>
-                <SelectItem value="development">Development ({developmentProjects.length})</SelectItem>
-                <SelectItem value="design">Design ({designProjects.length})</SelectItem>
+                <SelectItem value="all">
+                  All Projects ({allProjects.length})
+                </SelectItem>
+                <SelectItem value="development">
+                  Development ({developmentProjects.length})
+                </SelectItem>
+                <SelectItem value="design">
+                  Design ({designProjects.length})
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
