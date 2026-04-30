@@ -1,6 +1,12 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { HiCode, HiExternalLink, HiEye, HiSparkles, HiDesktopComputer } from "react-icons/hi";
+import {
+  HiCode,
+  HiExternalLink,
+  HiEye,
+  HiSparkles,
+  HiDesktopComputer,
+} from "react-icons/hi";
 import { FaGithub } from "react-icons/fa";
 import { MdColorLens } from "react-icons/md";
 import { Button } from "@/components/ui/button";
@@ -14,7 +20,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
     <Card
       className="skill-card group overflow-hidden border-border/50 cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-500 p-0"
       style={{ animationDelay: `${index * 0.1}s` }}
-      onClick={() => navigate(`/project/${project.id}`)}
+      onClick={() => navigate(`/project/${project._id}`)}
     >
       <div className="aspect-video relative overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
         <img
@@ -25,12 +31,10 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
         <div className="absolute top-4 right-4 flex gap-2 items-center">
           <Badge
-            variant={
-              project.category == "development" ? "default" : "secondary"
-            }
+            variant={project.type == "development" ? "default" : "secondary"}
             className="font-medium shadow-lg backdrop-blur-sm"
           >
-            {project.category === "development" ? (
+            {project.type === "development" ? (
               <>
                 Development
                 <img src={icons.code} className="w-3.5 h-3.5 ml-1.5" />
@@ -45,7 +49,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         </div>
 
         <div className="absolute top-1 left-2 flex gap-2 pt-2">
-          {project.category === "development" ? (
+          {project.type === "development" ? (
             <Button
               variant="outline"
               size="sm"
@@ -65,7 +69,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         </div>
         <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
           <div className="flex flex-wrap gap-1.5">
-            {project.tech.slice(0, 3).map((tech: string) => (
+            {project.technologies.slice(0, 3).map((tech: string) => (
               <Badge
                 key={tech}
                 variant="secondary"
@@ -74,9 +78,9 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
                 {tech}
               </Badge>
             ))}
-            {project.tech.length > 3 && (
+            {project.technologies.length > 3 && (
               <Badge variant="outline" className="text-xs font-medium">
-                +{project.tech.length - 3}
+                +{project.technologies.length - 3}
               </Badge>
             )}
           </div>

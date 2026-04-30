@@ -1,12 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { HiArrowLeft, HiExternalLink, HiCalendar, HiUser, HiChevronLeft, HiChevronRight, HiPlay } from "react-icons/hi";
+import {
+  HiArrowLeft,
+  HiExternalLink,
+  HiCalendar,
+  HiUser,
+  HiChevronLeft,
+  HiChevronRight,
+  HiPlay,
+} from "react-icons/hi";
 import { FaGithub } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import { projectDetails } from "@/data/project-details";
 import { error } from "@/assets/assets";
 import { useEffect, useState } from "react";
+import { useProjectsStore } from "@/stores/projectsStore";
 
 const getYouTubeId = (url: string) => {
   const match = url.match(
@@ -18,19 +26,39 @@ const getYouTubeId = (url: string) => {
 const ProjectDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { projects, fetchProjects } = useProjectsStore();
+  const [project, setProject] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  const project = projectDetails[id || "1"];
+    const loadProject = async () => {
+      if (projects.length === 0) {
+        await fetchProjects();
+      }
+      const foundProject = projects.find((p) => p._id === id);
+      setProject(foundProject);
+      setLoading(false);
+    };
+    loadProject();
+  }, [id, projects, fetchProjects]);
   const images = project?.images?.length ? project.images : [project?.image];
   const [currentIndex, setCurrentIndex] = useState(0);
   const prev = () =>
     setCurrentIndex((i) => (i - 1 + images.length) % images.length);
   const next = () => setCurrentIndex((i) => (i + 1) % images.length);
   const videoId = project?.videoUrl ? getYouTubeId(project.videoUrl) : null;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading project...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
@@ -127,7 +155,7 @@ const ProjectDetail = () => {
             <div className="space-y-6 slide-up  z-20">
               <div className="space-y-4">
                 <Badge variant="secondary" className="w-fit">
-                  {project.category}
+                  {project.type}
                 </Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
                   {project.title}

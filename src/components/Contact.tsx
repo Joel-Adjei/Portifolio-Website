@@ -4,11 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { HiMail, HiLocationMarker, HiPhone, HiPaperAirplane } from "react-icons/hi";
+import {
+  HiMail,
+  HiLocationMarker,
+  HiPhone,
+  HiPaperAirplane,
+} from "react-icons/hi";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { backgrounds } from "@/assets/assets";
 import { useMessagesStore } from "@/stores/messagesStore";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/lib/api";
 
 const Contact = () => {
   const { elementRef, isVisible } = useIntersectionObserver();
@@ -23,23 +29,52 @@ const Contact = () => {
   });
   const [sending, setSending] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setForm((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.firstName || !form.email || !form.message) {
-      toast({ title: "Please fill in all required fields", variant: "destructive" });
+      toast({
+        title: "Please fill in all required fields",
+        variant: "destructive",
+      });
       return;
     }
     setSending(true);
-    setTimeout(() => {
-      addMessage(form);
-      toast({ title: "Message sent!", description: "Thanks for reaching out. I'll get back to you soon." });
-      setForm({ firstName: "", lastName: "", email: "", subject: "", message: "" });
+    try {
+      const response = await api.sendMessage(form);
+      if (response.error) {
+        toast({
+          title: "Failed to send message",
+          description: response.error,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Message sent!",
+          description: "Thanks for reaching out. I'll get back to you soon.",
+        });
+        setForm({
+          firstName: "",
+          lastName: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Failed to send message",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
       setSending(false);
-    }, 800);
+    }
   };
   const contactInfo = [
     {
@@ -205,7 +240,11 @@ const Contact = () => {
                   />
                 </div>
 
-                <Button type="submit" className="w-full glow-effect group" disabled={sending}>
+                <Button
+                  type="submit"
+                  className="w-full glow-effect group"
+                  disabled={sending}
+                >
                   {sending ? "Sending..." : "Send Message"}
                   <HiPaperAirplane className="ml-2 h-4 w-4 group-hover:translate-x-1 smooth-transition" />
                 </Button>
