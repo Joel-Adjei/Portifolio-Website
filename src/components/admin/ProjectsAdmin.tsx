@@ -9,7 +9,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useProjectsStore } from "@/stores/projectsStore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Code, Palette, Calendar, User, Github, ExternalLink, Trash2, Edit, Plus, X } from "lucide-react";
+import { HiCode, HiCalendar, HiUser, HiExternalLink, HiTrash, HiPencil, HiPlus, HiX } from "react-icons/hi";
+import { FaGithub } from "react-icons/fa";
+import { MdColorLens } from "react-icons/md";
 
 export default function ProjectsAdmin() {
   const { projects, addProject, updateProject, deleteProject } = useProjectsStore();
@@ -127,7 +129,7 @@ export default function ProjectsAdmin() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          {editingId ? <Edit className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+          {editingId ? <HiPencil className="h-5 w-5" /> : <HiPlus className="h-5 w-5" />}
           {editingId ? "Edit Project" : "Create New Project"}
         </CardTitle>
       </CardHeader>
@@ -142,7 +144,7 @@ export default function ProjectsAdmin() {
               className="h-auto py-4"
               onClick={() => setType("development")}
             >
-              <Code className="mr-2 h-5 w-5" />
+              <HiCode className="mr-2 h-5 w-5" />
               <div className="text-left">
                 <div className="font-semibold">Development</div>
                 <div className="text-xs opacity-70">Software projects</div>
@@ -154,7 +156,7 @@ export default function ProjectsAdmin() {
               className="h-auto py-4"
               onClick={() => setType("design")}
             >
-              <Palette className="mr-2 h-5 w-5" />
+              <MdColorLens className="mr-2 h-5 w-5" />
               <div className="text-left">
                 <div className="font-semibold">Design</div>
                 <div className="text-xs opacity-70">Graphic & Motion</div>
@@ -232,7 +234,7 @@ export default function ProjectsAdmin() {
 
             <div className="space-y-2">
               <Label htmlFor="date" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
+                <HiCalendar className="h-4 w-4" />
                 Project Date
               </Label>
               <Input
@@ -245,7 +247,7 @@ export default function ProjectsAdmin() {
 
             <div className="space-y-2">
               <Label htmlFor="client" className="flex items-center gap-2">
-                <User className="h-4 w-4" />
+                <HiUser className="h-4 w-4" />
                 Client Name
               </Label>
               <Input
@@ -276,7 +278,7 @@ export default function ProjectsAdmin() {
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTechnology())}
                 />
                 <Button type="button" onClick={handleAddTechnology} size="icon">
-                  <Plus className="h-4 w-4" />
+                  <HiPlus className="h-4 w-4" />
                 </Button>
               </div>
               {technologies.length > 0 && (
@@ -284,8 +286,8 @@ export default function ProjectsAdmin() {
                   {technologies.map((tech) => (
                     <Badge key={tech} variant="secondary" className="gap-1">
                       {tech}
-                      <X 
-                        className="h-3 w-3 cursor-pointer" 
+                      <HiX
+                        className="h-3 w-3 cursor-pointer"
                         onClick={() => handleRemoveTechnology(tech)}
                       />
                     </Badge>
@@ -299,7 +301,7 @@ export default function ProjectsAdmin() {
         {/* Conditional URLs based on type */}
         <Card className="p-4 bg-muted/30">
           <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-            <ExternalLink className="h-4 w-4" />
+            <HiExternalLink className="h-4 w-4" />
             Project Links
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
@@ -307,7 +309,7 @@ export default function ProjectsAdmin() {
               <>
                 <div className="space-y-2">
                   <Label htmlFor="githubUrl" className="flex items-center gap-2">
-                    <Github className="h-4 w-4" />
+                    <FaGithub className="h-4 w-4" />
                     GitHub URL
                   </Label>
                   <Input
@@ -319,7 +321,7 @@ export default function ProjectsAdmin() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="liveUrl" className="flex items-center gap-2">
-                    <ExternalLink className="h-4 w-4" />
+                    <HiExternalLink className="h-4 w-4" />
                     Live Demo URL
                   </Label>
                   <Input
@@ -334,7 +336,7 @@ export default function ProjectsAdmin() {
               <>
                 <div className="space-y-2">
                   <Label htmlFor="behanceUrl" className="flex items-center gap-2">
-                    <ExternalLink className="h-4 w-4" />
+                    <HiExternalLink className="h-4 w-4" />
                     Behance URL
                   </Label>
                   <Input
@@ -346,7 +348,7 @@ export default function ProjectsAdmin() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="previewUrl" className="flex items-center gap-2">
-                    <ExternalLink className="h-4 w-4" />
+                    <HiExternalLink className="h-4 w-4" />
                     Preview URL
                   </Label>
                   <Input
@@ -394,9 +396,9 @@ export default function ProjectsAdmin() {
                     <TableCell>
                       <Badge variant={project.type === "development" ? "default" : "secondary"}>
                         {project.type === "development" ? (
-                          <Code className="h-3 w-3 mr-1" />
+                          <HiCode className="h-3 w-3 mr-1" />
                         ) : (
-                          <Palette className="h-3 w-3 mr-1" />
+                          <MdColorLens className="h-3 w-3 mr-1" />
                         )}
                         {project.type}
                       </Badge>
@@ -410,14 +412,14 @@ export default function ProjectsAdmin() {
                           size="sm"
                           onClick={() => loadProjectForEdit(project.id)}
                         >
-                          <Edit className="h-4 w-4" />
+                          <HiPencil className="h-4 w-4" />
                         </Button>
                         <Button
                           variant="destructive"
                           size="sm"
                           onClick={() => handleDelete(project.id)}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <HiTrash className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, PhoneCall, FolderKanban, X } from "lucide-react";
+import { HiMenu, HiPhone, HiFolder, HiX } from "react-icons/hi";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import ContactModal from "./ContactModal";
 import { objects } from "@/assets/assets";
@@ -25,7 +25,7 @@ const Navigation = () => {
       label: "Projects",
       href: "/projects",
       path: "/projects",
-      icon: FolderKanban,
+      icon: HiFolder,
     },
     // { label: "Blog", href: "/blog", path: "/blog", icon: BookOpen },
   ];
@@ -78,7 +78,7 @@ const Navigation = () => {
               className="smooth-transition hover:glow-effect"
               onClick={() => setIsContactModalOpen(true)}
             >
-              <PhoneCall />
+              <HiPhone />
               <p className="hidden md:block">Contact</p>
             </Button>
           </div>

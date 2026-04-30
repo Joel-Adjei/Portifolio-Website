@@ -1,12 +1,5 @@
-import {
-  Github,
-  Linkedin,
-  Twitter,
-  Mail,
-  Phone,
-  MapPin,
-  ExternalLink,
-} from "lucide-react";
+import { HiMail, HiPhone, HiLocationMarker, HiExternalLink } from "react-icons/hi";
+import { FaGithub, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -21,23 +14,23 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Github, href: "https://github.com/Joel-Adjei", label: "GitHub" },
+    { icon: FaGithub, href: "https://github.com/Joel-Adjei", label: "GitHub" },
     {
-      icon: Linkedin,
+      icon: FaLinkedinIn,
       href: "https://linkedin.com/in/joel-adjei",
       label: "LinkedIn",
     },
-    { icon: Twitter, href: "https://twitter.com/joel_adjei", label: "Twitter" },
+    { icon: FaTwitter, href: "https://twitter.com/joel_adjei", label: "Twitter" },
   ];
 
   const contactInfo = [
     {
-      icon: Mail,
+      icon: HiMail,
       value: "joeladjei01@gmail.com",
       href: "mailto:joeladjei01@gmail.com",
     },
-    { icon: Phone, value: "+233 531 547-562", href: "tel:+233531547562" },
-    { icon: MapPin, value: "Accra, Ghana", href: "#" },
+    { icon: HiPhone, value: "+233 531 547-562", href: "tel:+233531547562" },
+    { icon: HiLocationMarker, value: "Accra, Ghana", href: "#" },
   ];
 
   const handleScrollTo = (id: string) => {
@@ -148,14 +141,14 @@ const Footer = () => {
               className="hover:text-primary smooth-transition flex items-center gap-1"
             >
               Privacy Policy
-              <ExternalLink className="h-3 w-3" />
+              <HiExternalLink className="h-3 w-3" />
             </Link>
             <Link
               to="#"
               className="hover:text-primary smooth-transition flex items-center gap-1"
             >
               Terms of Service
-              <ExternalLink className="h-3 w-3" />
+              <HiExternalLink className="h-3 w-3" />
             </Link>
           </div>
         </div>

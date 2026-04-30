@@ -1,20 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import {
-  Camera,
-  Palette,
-  Film,
-  Type,
-  Layers,
-  Wand2,
-  Code2,
-  Database,
-  Globe,
-  Smartphone,
-  GitBranch,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { HiCamera, HiFilm, HiCollection, HiCode, HiDatabase, HiGlobe, HiDeviceMobile, HiChevronLeft, HiChevronRight, HiSparkles } from "react-icons/hi";
+import { MdColorLens, MdTextFields, MdDeviceHub } from "react-icons/md";
 import {
   Carousel,
   CarouselContent,
@@ -29,7 +16,7 @@ const DI = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
 
 const skillCategories = [
   {
-    icon: Camera,
+    icon: HiCamera,
     title: "Photography",
     skills: ["Portrait", "Landscape", "Product", "Event", "Street", "Aerial"],
     color: "text-sky-400",
@@ -45,7 +32,7 @@ const skillCategories = [
     images: [projects.project1, projects.project3, projects.project5],
   },
   {
-    icon: Palette,
+    icon: MdColorLens,
     title: "Graphic Design",
     skills: [
       "Brand Identity",
@@ -65,7 +52,7 @@ const skillCategories = [
     images: [projects.project4, projects.project6, projects.project2],
   },
   {
-    icon: Wand2,
+    icon: HiSparkles,
     title: "Photo Editing",
     skills: [
       "Adobe Lightroom",
@@ -85,7 +72,7 @@ const skillCategories = [
     images: [projects.project2, projects.project5, projects.project7],
   },
   {
-    icon: Layers,
+    icon: HiCollection,
     title: "Design Tools",
     skills: [
       "Adobe Illustrator",
@@ -105,7 +92,7 @@ const skillCategories = [
     images: [projects.project3, projects.project1, projects.project6],
   },
   {
-    icon: Film,
+    icon: HiFilm,
     title: "Video & Motion",
     skills: [
       "Premiere Pro",
@@ -127,7 +114,7 @@ const skillCategories = [
     images: [projects.project5, projects.project7, projects.project3],
   },
   {
-    icon: Type,
+    icon: MdTextFields,
     title: "Print & Publishing",
     skills: [
       "Print Design",
@@ -150,7 +137,7 @@ const skillCategories = [
     images: [projects.project6, projects.project4, projects.project1],
   },
   {
-    icon: Code2,
+    icon: HiCode,
     title: "Frontend Development",
     skills: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Vue.js"],
     color: "text-cyan-400",
@@ -163,7 +150,7 @@ const skillCategories = [
     images: [projects.project7, projects.project2, projects.project5],
   },
   {
-    icon: Database,
+    icon: HiDatabase,
     title: "Backend Development",
     skills: [
       "Node.js",
@@ -186,7 +173,7 @@ const skillCategories = [
     images: [projects.project3, projects.project6, projects.project4],
   },
   {
-    icon: Globe,
+    icon: HiGlobe,
     title: "Cloud & DevOps",
     skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform", "Linux"],
     color: "text-blue-400",
@@ -202,7 +189,7 @@ const skillCategories = [
     images: [projects.project1, projects.project4, projects.project7],
   },
   {
-    icon: Smartphone,
+    icon: HiDeviceMobile,
     title: "Mobile Development",
     skills: ["React Native", "Flutter", "Swift", "Kotlin", "Expo"],
     color: "text-fuchsia-400",
@@ -215,7 +202,7 @@ const skillCategories = [
     images: [projects.project5, projects.project2, projects.project6],
   },
   {
-    icon: GitBranch,
+    icon: MdDeviceHub,
     title: "Tools & Workflow",
     skills: ["Git", "GitHub", "VS Code", "Jira", "Agile", "Figma"],
     color: "text-rose-400",
@@ -452,7 +439,7 @@ const Skills = () => {
               bg-black/40 border border-white/10 backdrop-blur-xl
               hover:bg-primary hover:border-primary hover:scale-110 active:scale-95 shadow-2xl text-white"
           >
-            <ChevronLeft className="h-6 w-6" />
+            <HiChevronLeft className="h-6 w-6" />
           </button>
           <button
             onClick={scrollNext}
@@ -461,7 +448,7 @@ const Skills = () => {
               bg-black/40 border border-white/10 backdrop-blur-xl
               hover:bg-primary hover:border-primary hover:scale-110 active:scale-95 shadow-2xl text-white"
           >
-            <ChevronRight className="h-6 w-6" />
+            <HiChevronRight className="h-6 w-6" />
           </button>
         </div>
 

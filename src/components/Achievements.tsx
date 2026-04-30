@@ -1,11 +1,5 @@
-import {
-  Trophy,
-  Award,
-  Medal,
-  Star,
-  GraduationCap,
-  ExternalLink,
-} from "lucide-react";
+import { HiStar, HiExternalLink } from "react-icons/hi";
+import { FaTrophy, FaAward, FaMedal, FaGraduationCap } from "react-icons/fa";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import Header from "./common/Header";
 import { backgrounds } from "@/assets/assets";
@@ -16,7 +10,7 @@ import { useState } from "react";
 
 const achievementList = [
   {
-    icon: Trophy,
+    icon: FaTrophy,
     title: "Top Rated Plus Freelancer",
     description:
       "Ranked among the top 3% of designers and developers globally on Upwork with a 100% job success score.",
@@ -27,7 +21,7 @@ const achievementList = [
     type: "Award",
   },
   {
-    icon: Award,
+    icon: FaAward,
     title: "Excellence in Visual Storytelling",
     description:
       "Awarded 'Best Visual Narrative' at the National Digital Arts Exhibition for the 'Urban Echoes' series.",
@@ -38,7 +32,7 @@ const achievementList = [
     type: "Recognition",
   },
   {
-    icon: GraduationCap,
+    icon: FaGraduationCap,
     title: "BSc Computer Science",
     description:
       "Graduated with First-Class Honors. Specialized in Creative Coding and User Interface Design.",
@@ -49,7 +43,7 @@ const achievementList = [
     type: "Certification",
   },
   {
-    icon: Medal,
+    icon: FaMedal,
     title: "Global Hackathon Finalist",
     description:
       "Led a team of four to the finals of the 'Build the Future' hackathon, developing an AI-driven accessibility tool.",
@@ -60,7 +54,7 @@ const achievementList = [
     type: "Award",
   },
   {
-    icon: Award,
+    icon: FaAward,
     title: "Full Stack Developer Certification",
     description:
       "Comprehensive certification covering modern web development technologies including React, Node.js, and cloud deployment.",
@@ -71,7 +65,7 @@ const achievementList = [
     type: "Certification",
   },
   {
-    icon: Trophy,
+    icon: FaTrophy,
     title: "Best Innovation Award",
     description:
       "Recognized for developing an AI-powered task management solution that increased team productivity by 40%.",
@@ -82,7 +76,7 @@ const achievementList = [
     type: "Award",
   },
   {
-    icon: Star,
+    icon: HiStar,
     title: "Open Source Contributor",
     description:
       "Active contributor to various open source projects with over 500+ commits and 50+ pull requests merged.",
@@ -93,7 +87,7 @@ const achievementList = [
     type: "Recognition",
   },
   {
-    icon: Trophy,
+    icon: FaTrophy,
     title: "Hackathon Winner",
     description:
       "First place winner in 48-hour hackathon for creating a sustainable energy monitoring dashboard.",
@@ -104,7 +98,7 @@ const achievementList = [
     type: "Award",
   },
   {
-    icon: Award,
+    icon: FaAward,
     title: "AWS Cloud Practitioner",
     description:
       "Foundational certification in cloud computing concepts, AWS services, and cloud architecture best practices.",
@@ -204,7 +198,7 @@ const Achievements = () => {
             onClick={() => setOpen(true)}
           >
             View All Milestones
-            <ExternalLink className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            <HiExternalLink className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
           </Button>
         </div>
       </div>

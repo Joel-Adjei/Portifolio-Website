@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Clock, Calendar, Search } from "lucide-react";
+import { HiArrowRight, HiClock, HiCalendar, HiSearch } from "react-icons/hi";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { blogPosts } from "@/data/blogPosts";
@@ -76,7 +76,7 @@ const BlogPage = () => {
         {/* Search + filter */}
         <div className="mt-12 flex flex-col sm:flex-row gap-4 items-start sm:items-center max-w-3xl mx-auto">
           <div className="relative flex-1 w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
               placeholder="Search articles…"
               value={query}
@@ -155,15 +155,15 @@ const BlogPage = () => {
                   <div className="flex items-center justify-between pt-2 border-t border-white/8">
                     <div className="flex items-center gap-3 text-xs text-white/40">
                       <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
+                        <HiCalendar className="w-3 h-3" />
                         {post.date}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
+                        <HiClock className="w-3 h-3" />
                         {post.readingTime}
                       </span>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-primary group-hover:translate-x-1 smooth-transition" />
+                    <HiArrowRight className="w-4 h-4 text-white/30 group-hover:text-primary group-hover:translate-x-1 smooth-transition" />
                   </div>
                 </div>
               </Link>

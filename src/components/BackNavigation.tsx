@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { HiArrowLeft } from "react-icons/hi";
 
 const BackNavigation = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const BackNavigation = () => {
               onClick={() => navigate("/")}
               className="smooth-transition hover:glow-effect"
             >
-              <ArrowLeft />
+              <HiArrowLeft />
               Back
             </Button>
           </div>

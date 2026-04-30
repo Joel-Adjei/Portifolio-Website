@@ -23,7 +23,7 @@ export default function Auth() {
         title: "Success",
         description: "Signed in successfully!",
       });
-      navigate("/admin");
+      navigate("/admin/dashboard");
     } else {
       toast({
         title: "Error",

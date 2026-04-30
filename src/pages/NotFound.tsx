@@ -1,7 +1,8 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Home, ChevronLeft, Ghost } from "lucide-react";
+import { HiHome, HiChevronLeft } from "react-icons/hi";
+import { FaGhost } from "react-icons/fa";
 import { error } from "@/assets/assets";
 
 const NotFound = () => {
@@ -63,7 +64,7 @@ const NotFound = () => {
             className="rounded-full px-8 h-12 text-base font-semibold glow-effect hover:scale-105 transition-all"
           >
             <Link to="/">
-              <Home className="mr-2 h-5 w-5" />
+              <HiHome className="mr-2 h-5 w-5" />
               Back to Safety
             </Link>
           </Button>
@@ -74,7 +75,7 @@ const NotFound = () => {
             className="rounded-full px-8 h-12 text-base font-semibold border-white/10 hover:bg-white/5 transition-all"
             onClick={() => window.history.back()}
           >
-            <ChevronLeft className="mr-2 h-5 w-5" />
+            <HiChevronLeft className="mr-2 h-5 w-5" />
             Go Back
           </Button>
         </div>

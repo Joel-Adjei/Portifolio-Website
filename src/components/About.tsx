@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
-import { Code, Coffee, Lightbulb, Users } from "lucide-react";
+import { HiCode, HiLightBulb, HiUserGroup } from "react-icons/hi";
+import { FaCoffee } from "react-icons/fa";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import aboutImg from "@/assets/about-img.png";
 import { objects } from "@/assets/assets";
@@ -16,22 +17,22 @@ const About = () => {
 
   const highlights = [
     {
-      icon: Code,
+      icon: HiCode,
       title: "Clean Code",
       description: "Maintainable & scalable solutions",
     },
     {
-      icon: Lightbulb,
+      icon: HiLightBulb,
       title: "Innovation",
       description: "Always exploring new tech",
     },
     {
-      icon: Users,
+      icon: HiUserGroup,
       title: "Collaboration",
       description: "Strong communicator & team player",
     },
     {
-      icon: Coffee,
+      icon: FaCoffee,
       title: "Dedication",
       description: "Committed to continuous learning",
     },

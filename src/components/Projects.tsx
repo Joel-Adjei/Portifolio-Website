@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { HiArrowRight, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import ProjectCard from "@/components/ui/ProjectCard";
@@ -168,7 +168,7 @@ const Projects = () => {
               hover:bg-primary hover:text-white hover:scale-110 active:scale-95 shadow-2xl hidden md:flex"
             aria-label="Previous Project"
           >
-            <ChevronLeft className="h-7 w-7" />
+            <HiChevronLeft className="h-7 w-7" />
           </button>
           <button
             onClick={scrollNext}
@@ -177,7 +177,7 @@ const Projects = () => {
               hover:bg-primary hover:text-white hover:scale-110 active:scale-95 shadow-2xl hidden md:flex"
             aria-label="Next Project"
           >
-            <ChevronRight className="h-7 w-7" />
+            <HiChevronRight className="h-7 w-7" />
           </button>
 
           {/* Mobile Controls */}
@@ -188,7 +188,7 @@ const Projects = () => {
               onClick={scrollPrev}
               className="rounded-full"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <HiChevronLeft className="h-5 w-5" />
             </Button>
             <Button
               variant="outline"
@@ -196,7 +196,7 @@ const Projects = () => {
               onClick={scrollNext}
               className="rounded-full"
             >
-              <ChevronRight className="h-5 w-5" />
+              <HiChevronRight className="h-5 w-5" />
             </Button>
           </div>
         </div>
@@ -225,7 +225,7 @@ const Projects = () => {
             className="smooth-transition hover:bg-primary/5 group border border-primary/10 px-8 py-6 text-lg"
           >
             Explore Complete Portfolio
-            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 smooth-transition" />
+            <HiArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 smooth-transition" />
           </Button>
         </div>
       </div>

@@ -1,29 +1,61 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { HiMail, HiLocationMarker, HiPhone, HiPaperAirplane } from "react-icons/hi";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { backgrounds } from "@/assets/assets";
+import { useMessagesStore } from "@/stores/messagesStore";
+import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
   const { elementRef, isVisible } = useIntersectionObserver();
+  const addMessage = useMessagesStore((s) => s.addMessage);
+  const { toast } = useToast();
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [sending, setSending] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.firstName || !form.email || !form.message) {
+      toast({ title: "Please fill in all required fields", variant: "destructive" });
+      return;
+    }
+    setSending(true);
+    setTimeout(() => {
+      addMessage(form);
+      toast({ title: "Message sent!", description: "Thanks for reaching out. I'll get back to you soon." });
+      setForm({ firstName: "", lastName: "", email: "", subject: "", message: "" });
+      setSending(false);
+    }, 800);
+  };
   const contactInfo = [
     {
-      icon: Mail,
+      icon: HiMail,
       label: "Email",
       value: "joeladjei01@gmail.com",
       href: "mailto:joeladjei01@gmail.com",
     },
     {
-      icon: Phone,
+      icon: HiPhone,
       label: "Phone",
       value: "+233 531 547-562",
       href: "tel:+233531547562",
     },
     {
-      icon: MapPin,
+      icon: HiLocationMarker,
       label: "Location",
       value: "Accra, Ghana",
       href: "#",
@@ -106,63 +138,78 @@ const Contact = () => {
           <Card className="skill-card" style={{ animationDelay: "0.4s" }}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Send className="h-5 w-5 text-primary" />
+                <HiPaperAirplane className="h-5 w-5 text-primary" />
                 Send me a message
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name *</Label>
+                    <Input
+                      id="firstName"
+                      placeholder="John"
+                      className="smooth-transition focus:glow-effect"
+                      value={form.firstName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      placeholder="Doe"
+                      className="smooth-transition focus:glow-effect"
+                      value={form.lastName}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="email">Email *</Label>
                   <Input
-                    id="firstName"
-                    placeholder="John"
+                    id="email"
+                    type="email"
+                    placeholder="john@example.com"
                     className="smooth-transition focus:glow-effect"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="subject">Subject</Label>
                   <Input
-                    id="lastName"
-                    placeholder="Doe"
+                    id="subject"
+                    placeholder="Project collaboration"
                     className="smooth-transition focus:glow-effect"
+                    value={form.subject}
+                    onChange={handleChange}
                   />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john@example.com"
-                  className="smooth-transition focus:glow-effect"
-                />
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message *</Label>
+                  <Textarea
+                    id="message"
+                    placeholder="Tell me about your project..."
+                    rows={5}
+                    className="smooth-transition focus:glow-effect"
+                    value={form.message}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="subject">Subject</Label>
-                <Input
-                  id="subject"
-                  placeholder="Project collaboration"
-                  className="smooth-transition focus:glow-effect"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea
-                  id="message"
-                  placeholder="Tell me about your project..."
-                  rows={5}
-                  className="smooth-transition focus:glow-effect"
-                />
-              </div>
-
-              <Button className="w-full glow-effect group">
-                Send Message
-                <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 smooth-transition" />
-              </Button>
+                <Button type="submit" className="w-full glow-effect group" disabled={sending}>
+                  {sending ? "Sending..." : "Send Message"}
+                  <HiPaperAirplane className="ml-2 h-4 w-4 group-hover:translate-x-1 smooth-transition" />
+                </Button>
+              </form>
             </CardContent>
           </Card>
         </div>

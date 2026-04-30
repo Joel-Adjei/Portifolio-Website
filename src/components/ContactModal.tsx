@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, Mail, Phone, MapPin, Sparkles } from "lucide-react";
+import { HiPaperAirplane, HiMail, HiPhone, HiSparkles } from "react-icons/hi";
 import { toast } from "sonner";
 
 interface ContactModalProps {
@@ -46,7 +46,7 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
             <div className="bg-primary/5 p-8 flex-col justify-between border-r border-border/50 hidden md:flex">
               <div>
                 <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
-                  <Sparkles className="h-6 w-6 text-primary" />
+                  <HiSparkles className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-xl font-bold mb-2 hero-text">Let's Talk</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
@@ -57,11 +57,11 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
 
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <Mail className="h-4 w-4 text-primary" />
+                  <HiMail className="h-4 w-4 text-primary" />
                   <span className="truncate">joeladjei01@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <Phone className="h-4 w-4 text-primary" />
+                  <HiPhone className="h-4 w-4 text-primary" />
                   <span>+233 531 547-562</span>
                 </div>
               </div>
@@ -167,7 +167,7 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
                     className={`flex items-center justify-center transition-all duration-300 ${isSubmitting ? "opacity-0 -translate-y-full" : "opacity-100 translate-y-0"}`}
                   >
                     Send Message
-                    <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    <HiPaperAirplane className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                   </span>
                   {isSubmitting && (
                     <span className="absolute inset-0 flex items-center justify-center animate-in fade-in slide-in-from-bottom-2">

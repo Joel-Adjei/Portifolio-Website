@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Clock, Calendar, ArrowRight } from "lucide-react";
+import { HiArrowLeft, HiClock, HiCalendar, HiArrowRight } from "react-icons/hi";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/data/blogPosts";
@@ -46,7 +46,7 @@ const BlogPost = () => {
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-4">
         <p className="text-2xl font-bold text-white">Article not found.</p>
         <Button variant="outline" onClick={() => navigate("/blog")}>
-          <ArrowLeft className="mr-2 w-4 h-4" />
+          <HiArrowLeft className="mr-2 w-4 h-4" />
           Back to Blog
         </Button>
       </div>
@@ -69,7 +69,7 @@ const BlogPost = () => {
           to="/blog"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white smooth-transition mb-10 group"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 smooth-transition" />
+          <HiArrowLeft className="w-4 h-4 group-hover:-translate-x-1 smooth-transition" />
           Back to Blog
         </Link>
 
@@ -94,11 +94,11 @@ const BlogPost = () => {
         {/* Meta */}
         <div className="flex items-center gap-4 text-sm text-muted-foreground mb-12 pb-8 border-b border-white/10">
           <span className="flex items-center gap-1.5">
-            <Calendar className="w-4 h-4" />
+            <HiCalendar className="w-4 h-4" />
             {post.date}
           </span>
           <span className="flex items-center gap-1.5">
-            <Clock className="w-4 h-4" />
+            <HiClock className="w-4 h-4" />
             {post.readingTime}
           </span>
         </div>
@@ -123,7 +123,7 @@ const BlogPost = () => {
               }
             >
               <span className="text-xs text-muted-foreground flex items-center gap-1">
-                <ArrowLeft className="w-3 h-3" />
+                <HiArrowLeft className="w-3 h-3" />
                 Previous article
               </span>
               <p className="text-sm font-semibold text-white group-hover:text-primary transition-colors duration-300 leading-snug">
@@ -147,7 +147,7 @@ const BlogPost = () => {
             >
               <span className="text-xs text-muted-foreground flex items-center gap-1 justify-end">
                 Next article
-                <ArrowRight className="w-3 h-3" />
+                <HiArrowRight className="w-3 h-3" />
               </span>
               <p className="text-sm font-semibold text-white group-hover:text-primary transition-colors duration-300 leading-snug">
                 {next.title}

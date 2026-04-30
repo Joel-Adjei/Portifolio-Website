@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import { HiSearch } from "react-icons/hi";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import {
   Select,
@@ -200,7 +200,7 @@ const AllProjects = () => {
           {/* Controls */}
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search projects or technologies..."

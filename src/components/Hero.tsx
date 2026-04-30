@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
+import { HiArrowDown, HiMail } from "react-icons/hi";
+import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import myImg from "@/assets/my-img.png";
 import bgImag from "@/assets/bg-01.jpg";
 import { objects } from "@/assets/assets";
@@ -61,7 +62,7 @@ const Hero = () => {
                 }
                 className="hover:accent-glow smooth-transition"
               >
-                <Github className="h-5 w-5" />
+                <FaGithub className="h-5 w-5" />
               </Button>
               <Button
                 variant="ghost"
@@ -71,7 +72,7 @@ const Hero = () => {
                 }
                 className="hover:accent-glow smooth-transition"
               >
-                <Linkedin className="h-5 w-5" />
+                <FaLinkedinIn className="h-5 w-5" />
               </Button>
               <Button
                 variant="ghost"
@@ -81,7 +82,7 @@ const Hero = () => {
                 }
                 className="hover:accent-glow smooth-transition"
               >
-                <Mail className="h-5 w-5" />
+                <HiMail className="h-5 w-5" />
               </Button>
             </div>
           </div>

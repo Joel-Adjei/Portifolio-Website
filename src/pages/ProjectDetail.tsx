@@ -1,16 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  ArrowLeft,
-  Github,
-  ExternalLink,
-  Calendar,
-  User,
-  ChevronLeft,
-  ChevronRight,
-  Play,
-} from "lucide-react";
+import { HiArrowLeft, HiExternalLink, HiCalendar, HiUser, HiChevronLeft, HiChevronRight, HiPlay } from "react-icons/hi";
+import { FaGithub } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { projectDetails } from "@/data/project-details";
 import { error } from "@/assets/assets";
@@ -79,7 +71,7 @@ const ProjectDetail = () => {
               className="rounded-full px-8 h-12 text-base font-semibold glow-effect hover:scale-105 transition-all"
               onClick={() => navigate("/")}
             >
-              <ArrowLeft className="mr-2 h-5 w-5" />
+              <HiArrowLeft className="mr-2 h-5 w-5" />
               Back to Portfolio
             </Button>
 
@@ -127,7 +119,7 @@ const ProjectDetail = () => {
               onClick={() => navigate(-1)}
               className="smooth-transition hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <HiArrowLeft className="mr-2 h-4 w-4" />
               Back to Portfolio
             </Button>
           </div>
@@ -153,7 +145,7 @@ const ProjectDetail = () => {
                       className="glow-effect group"
                       onClick={() => window.open(project.liveUrl, "_blank")}
                     >
-                      <ExternalLink className="mr-2 h-4 w-4" />
+                      <HiExternalLink className="mr-2 h-4 w-4" />
                       View Live Site
                     </Button>
                     <Button
@@ -162,7 +154,7 @@ const ProjectDetail = () => {
                       className="smooth-transition hover:glow-effect"
                       onClick={() => window.open(project.githubUrl, "_blank")}
                     >
-                      <Github className="mr-2 h-4 w-4" />
+                      <FaGithub className="mr-2 h-4 w-4" />
                       View Code
                     </Button>
                   </>
@@ -173,7 +165,7 @@ const ProjectDetail = () => {
                       className="glow-effect group"
                       onClick={() => window.open(project.behanceUrl, "_blank")}
                     >
-                      <ExternalLink className="mr-2 h-4 w-4" />
+                      <HiExternalLink className="mr-2 h-4 w-4" />
                       View on Behance
                     </Button>
                     <Button
@@ -182,7 +174,7 @@ const ProjectDetail = () => {
                       className="smooth-transition hover:glow-effect"
                       onClick={() => window.open(project.previewUrl, "_blank")}
                     >
-                      <ExternalLink className="mr-2 h-4 w-4" />
+                      <HiExternalLink className="mr-2 h-4 w-4" />
                       Live Preview
                     </Button>
                   </>
@@ -207,13 +199,13 @@ const ProjectDetail = () => {
                         onClick={prev}
                         className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 transition-all"
                       >
-                        <ChevronLeft className="h-5 w-5" />
+                        <HiChevronLeft className="h-5 w-5" />
                       </button>
                       <button
                         onClick={next}
                         className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white rounded-full p-1.5 transition-all"
                       >
-                        <ChevronRight className="h-5 w-5" />
+                        <HiChevronRight className="h-5 w-5" />
                       </button>
                       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
                         {images.map((_, i) => (
@@ -256,7 +248,7 @@ const ProjectDetail = () => {
                   <div className=" mx-auto px-6">
                     <div className="flex items-center gap-3 mb-8">
                       <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/30">
-                        <Play className="h-4 w-4 text-primary fill-primary" />
+                        <HiPlay className="h-4 w-4 text-primary" />
                       </div>
                       <h2 className="text-3xl font-bold">Video Demo</h2>
                     </div>
@@ -281,13 +273,13 @@ const ProjectDetail = () => {
 
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <HiCalendar className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Date:</span>
                     <span>{new Date(project.date).toLocaleDateString()}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-muted-foreground" />
+                    <HiUser className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Client:</span>
                     <span>{project.client}</span>
                   </div>
@@ -315,7 +307,7 @@ const ProjectDetail = () => {
                         className="w-full justify-start"
                         onClick={() => window.open(project.liveUrl, "_blank")}
                       >
-                        <ExternalLink className="mr-2 h-4 w-4" />
+                        <HiExternalLink className="mr-2 h-4 w-4" />
                         Live Demo
                       </Button>
                       <Button
@@ -323,7 +315,7 @@ const ProjectDetail = () => {
                         className="w-full justify-start"
                         onClick={() => window.open(project.githubUrl, "_blank")}
                       >
-                        <Github className="mr-2 h-4 w-4" />
+                        <FaGithub className="mr-2 h-4 w-4" />
                         Source Code
                       </Button>
                     </>
@@ -336,7 +328,7 @@ const ProjectDetail = () => {
                           window.open(project.behanceUrl, "_blank")
                         }
                       >
-                        <ExternalLink className="mr-2 h-4 w-4" />
+                        <HiExternalLink className="mr-2 h-4 w-4" />
                         View on Behance
                       </Button>
                       <Button
@@ -346,7 +338,7 @@ const ProjectDetail = () => {
                           window.open(project.previewUrl, "_blank")
                         }
                       >
-                        <ExternalLink className="mr-2 h-4 w-4" />
+                        <HiExternalLink className="mr-2 h-4 w-4" />
                         Live Preview
                       </Button>
                     </>

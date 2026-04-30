@@ -1,14 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Code,
-  ExternalLink,
-  Eye,
-  Github,
-  Palette,
-  Sparkles,
-  Laptop,
-} from "lucide-react";
+import { HiCode, HiExternalLink, HiEye, HiSparkles, HiDesktopComputer } from "react-icons/hi";
+import { FaGithub } from "react-icons/fa";
+import { MdColorLens } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { icons, objects } from "@/assets/assets";
@@ -57,7 +51,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
               size="sm"
               className="transition-all duration-300 hover:bg-accent/10"
             >
-              <Github className="h-4 w-4" />
+              <FaGithub className="h-4 w-4" />
             </Button>
           ) : (
             <Button
@@ -65,7 +59,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
               size="sm"
               className="transition-all duration-300 hover:bg-accent/10"
             >
-              <ExternalLink className="h-4 w-4" />
+              <HiExternalLink className="h-4 w-4" />
             </Button>
           )}
         </div>

@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Award, Trophy, Star, Calendar, ExternalLink } from "lucide-react";
+import { HiStar, HiCalendar, HiExternalLink } from "react-icons/hi";
+import { FaAward, FaTrophy } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { useEffect } from "react";
@@ -22,7 +23,7 @@ const Achievements = () => {
       description:
         "Comprehensive certification covering modern web development technologies including React, Node.js, and cloud deployment.",
       type: "Certification",
-      icon: Award,
+      icon: FaAward,
       skills: ["React", "Node.js", "MongoDB", "AWS"],
     },
     {
@@ -33,7 +34,7 @@ const Achievements = () => {
       description:
         "Recognized for developing an AI-powered task management solution that increased team productivity by 40%.",
       type: "Award",
-      icon: Trophy,
+      icon: FaTrophy,
       skills: ["AI", "Machine Learning", "React", "Python"],
     },
     {
@@ -44,7 +45,7 @@ const Achievements = () => {
       description:
         "Active contributor to various open source projects with over 500+ commits and 50+ pull requests merged.",
       type: "Recognition",
-      icon: Star,
+      icon: HiStar,
       skills: ["Git", "JavaScript", "TypeScript", "React"],
     },
     {
@@ -55,7 +56,7 @@ const Achievements = () => {
       description:
         "Advanced certification in React ecosystem including hooks, context, performance optimization, and testing.",
       type: "Certification",
-      icon: Award,
+      icon: FaAward,
       skills: ["React", "Redux", "Testing", "Performance"],
     },
     {
@@ -66,7 +67,7 @@ const Achievements = () => {
       description:
         "First place winner in 48-hour hackathon for creating a sustainable energy monitoring dashboard.",
       type: "Award",
-      icon: Trophy,
+      icon: FaTrophy,
       skills: ["Vue.js", "D3.js", "IoT", "Real-time Data"],
     },
     {
@@ -77,7 +78,7 @@ const Achievements = () => {
       description:
         "Foundational certification in cloud computing concepts, AWS services, and cloud architecture best practices.",
       type: "Certification",
-      icon: Award,
+      icon: FaAward,
       skills: ["AWS", "Cloud Computing", "DevOps", "Security"],
     },
   ];
@@ -85,13 +86,13 @@ const Achievements = () => {
   const getIcon = (type: string) => {
     switch (type) {
       case "Award":
-        return Trophy;
+        return FaTrophy;
       case "Certification":
-        return Award;
+        return FaAward;
       case "Recognition":
-        return Star;
+        return HiStar;
       default:
-        return Award;
+        return FaAward;
     }
   };
 
@@ -156,7 +157,7 @@ const Achievements = () => {
                       {achievement.title}
                     </h3>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Calendar className="h-4 w-4" />
+                      <HiCalendar className="h-4 w-4" />
                       <span>{achievement.date}</span>
                     </div>
                   </CardHeader>
@@ -214,7 +215,7 @@ const Achievements = () => {
               onClick={() => navigate("/")}
               className="smooth-transition hover:accent-glow"
             >
-              <ExternalLink className="h-4 w-4 mr-2" />
+              <HiExternalLink className="h-4 w-4 mr-2" />
               View Portfolio
             </Button>
           </div>

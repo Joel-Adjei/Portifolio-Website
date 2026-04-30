@@ -1,5 +1,6 @@
 import React from "react";
-import { Briefcase, GraduationCap } from "lucide-react";
+import { HiBriefcase } from "react-icons/hi";
+import { FaGraduationCap } from "react-icons/fa";
 import { Badge } from "@/components/ui/badge";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { backgrounds } from "@/assets/assets";
@@ -196,7 +197,7 @@ const Experience = () => {
           <div className="space-y-12">
             {timeline.map((entry, index) => {
               const isLeft = index % 2 === 0;
-              const Icon = entry.type === "work" ? Briefcase : GraduationCap;
+              const Icon = entry.type === "work" ? HiBriefcase : FaGraduationCap;
 
               return (
                 <div
