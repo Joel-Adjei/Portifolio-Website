@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/carousel";
 import Header from "./common/Header";
 import { backgrounds } from "@/assets/assets";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjects } from "@/hooks/queries";
 
 const Projects = () => {
   const navigate = useNavigate();
@@ -21,11 +21,7 @@ const Projects = () => {
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const { projects, fetchProjects } = useProjectsStore();
-
-  useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+  const { data: projects = [] } = useProjects();
 
   useEffect(() => {
     if (!api) return;

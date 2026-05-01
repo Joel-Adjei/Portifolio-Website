@@ -9,9 +9,7 @@ import {
   HiChevronLeft,
 } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
-import { useAdminStore } from "@/stores/adminStore";
-import { api } from "@/lib/api";
-import { useMessagesStore } from "@/stores/messagesStore";
+import { useMe, useLogout, useMessages } from "@/hooks/queries";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -23,52 +21,25 @@ const navItems = [
 export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { isAdmin, setIsAdmin } = useAdminStore();
   const navigate = useNavigate();
-  const messages = useMessagesStore((s) => s.messages);
+  const { data: user } = useMe(!!localStorage.getItem("adminToken"));
+  const { mutate: logout } = useLogout();
+  const { data: messages = [] } = useMessages(!!user);
   const unreadCount = messages.filter((m) => !m.read).length;
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("adminToken");
-      if (token) {
-        try {
-          const response = await api.getMe();
-          if (!response.error) {
-            setIsAdmin(true);
-          } else {
-            localStorage.removeItem("adminToken");
-            navigate("/auth");
-          }
-        } catch (error) {
-          localStorage.removeItem("adminToken");
-          navigate("/auth");
-        }
-      } else {
-        navigate("/auth");
-      }
-    };
-
-    if (!isAdmin) {
-      checkAuth();
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      navigate("/auth");
     }
-  }, [isAdmin, setIsAdmin, navigate]);
+  }, [navigate]);
 
-  if (!isAdmin) return null;
-
-  if (!isAdmin) return null;
-
-  const handleSignOut = async () => {
-    try {
-      await api.logout();
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
+  useEffect(() => {
+    if (user === null) {
       localStorage.removeItem("adminToken");
-      setIsAdmin(false);
-      navigate("/");
+      navigate("/auth");
     }
-  };
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen flex bg-background">
@@ -163,7 +134,14 @@ export default function AdminLayout() {
         {/* Sign out */}
         <div className={cn("p-2 border-t border-border")}>
           <button
-            onClick={handleSignOut}
+            onClick={() => {
+              logout(undefined, {
+                onSuccess: () => {
+                  localStorage.removeItem("adminToken");
+                  navigate("/");
+                },
+              });
+            }}
             className={cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors w-full",
               collapsed && "justify-center",

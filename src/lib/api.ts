@@ -15,16 +15,26 @@ class ApiService {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {},
+    options: Omit<RequestInit, "body"> & {
+      body?: FormData | Record<string, any> | string;
+    } = {},
   ): Promise<ApiResponse<T>> {
     try {
       const url = `${this.baseURL}${endpoint}`;
+      const headers = { ...options.headers } as Record<string, string>;
+      let body = options.body;
+
+      if (!(body instanceof FormData)) {
+        headers["Content-Type"] = "application/json";
+        if (body && typeof body !== "string") {
+          body = JSON.stringify(body);
+        }
+      }
+
       const response = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
-          ...options.headers,
-        },
         ...options,
+        headers,
+        body: body as BodyInit,
       });
 
       if (!response.ok) {
@@ -77,23 +87,26 @@ class ApiService {
     return this.request(`/projects/${id}`);
   }
 
-  async createProject(formData: FormData) {
+  async createProject(payload: FormData | Record<string, any> | string) {
     return this.request("/projects", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${this.getToken()}`,
       },
-      body: formData,
+      body: payload,
     });
   }
 
-  async updateProject(id: string, formData: FormData) {
+  async updateProject(
+    id: string,
+    payload: FormData | Record<string, any> | string,
+  ) {
     return this.request(`/projects/${id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${this.getToken()}`,
       },
-      body: formData,
+      body: payload,
     });
   }
 

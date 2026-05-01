@@ -10,18 +10,17 @@ import {
 } from "@/components/ui/select";
 import ProjectCard from "@/components/ui/ProjectCard";
 import { backgrounds, objects } from "@/assets/assets";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjects } from "@/hooks/queries";
 
 const AllProjects = () => {
   const { elementRef, isVisible } = useIntersectionObserver();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  const { projects, fetchProjects } = useProjectsStore();
+  const { data: projects = [], isLoading } = useProjects();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchProjects();
-  }, [fetchProjects]);
+  }, []);
 
   const filteredProjects = projects.filter((p) => {
     const matchesCategory = category === "all" || p.type === category;
@@ -33,6 +32,9 @@ const AllProjects = () => {
       p.technologies.some((t) => t.toLowerCase().includes(q));
     return matchesCategory && matchesSearch;
   });
+
+  const developmentProjects = projects.filter((p) => p.type === "development");
+  const designProjects = projects.filter((p) => p.type === "design");
 
   return (
     <div className="min-h-screen bg-background">
@@ -94,7 +96,7 @@ const AllProjects = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">
-                  All Projects ({allProjects.length})
+                  All Projects ({projects.length})
                 </SelectItem>
                 <SelectItem value="development">
                   Development ({developmentProjects.length})
@@ -106,12 +108,16 @@ const AllProjects = () => {
             </Select>
           </div>
 
-          {filteredProjects.length > 0 ? (
+          {!isLoading && filteredProjects.length > 0 ? (
             <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredProjects.map((project, index) => (
                 <ProjectCard key={project.id} project={project} index={index} />
               ))}
             </div>
+          ) : isLoading ? (
+            <p className="text-center text-muted-foreground py-20">
+              Loading projects...
+            </p>
           ) : (
             <p className="text-center text-muted-foreground py-20">
               No projects match your search.

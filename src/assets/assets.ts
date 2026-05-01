@@ -36,6 +36,9 @@ import ps from "./objects/ps.png";
 import react from "./objects/react.png";
 import vscode from "./objects/vscode.png";
 
+import logo from "./logo.png";
+import logoText from "./logo-text.png";
+
 export const backgrounds = { bg01, bg02, bg03, bg04, bg05, bg06 };
 
 export const heroes = { heroPlaceholder };
@@ -67,4 +70,9 @@ export const objects = {
   obj3,
   obj4,
   obj5,
+};
+
+export const mylogos = {
+  logo,
+  logoText,
 };

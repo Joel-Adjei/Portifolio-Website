@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { HiMenu, HiPhone, HiFolder, HiX } from "react-icons/hi";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import ContactModal from "./ContactModal";
-import { objects } from "@/assets/assets";
+import { mylogos, objects } from "@/assets/assets";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +45,15 @@ const Navigation = () => {
             to="/"
             className="font-bold text-xl hero-text hover:text-primary smooth-transition"
           >
-            Joel.dev
+            <div className="flex items-center gap-3">
+              <img src={mylogos.logo} alt="Logo" className="w-10 " />
+
+              <img
+                src={mylogos.logoText}
+                alt="Logo"
+                className="object-contain h-4"
+              />
+            </div>
           </Link>
 
           {/* CTA Button */}

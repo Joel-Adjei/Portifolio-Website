@@ -9,14 +9,13 @@ import {
   HiArrowRight,
   HiClock,
 } from "react-icons/hi";
-import { useProjectsStore } from "@/stores/projectsStore";
-import { useMessagesStore } from "@/stores/messagesStore";
+import { useProjects, useMessages } from "@/hooks/queries";
 import { MdMessage } from "react-icons/md";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const projects = useProjectsStore((s) => s.projects);
-  const messages = useMessagesStore((s) => s.messages);
+  const { data: projects = [] } = useProjects();
+  const { data: messages = [] } = useMessages(true);
   const unread = messages.filter((m) => !m.read);
   const recentMessages = messages.slice(0, 5);
 

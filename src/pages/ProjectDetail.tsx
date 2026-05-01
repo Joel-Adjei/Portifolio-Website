@@ -14,7 +14,7 @@ import { FaGithub } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { error } from "@/assets/assets";
 import { useEffect, useState } from "react";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProject } from "@/hooks/queries";
 
 const getYouTubeId = (url: string) => {
   const match = url.match(
@@ -26,27 +26,19 @@ const getYouTubeId = (url: string) => {
 const ProjectDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { projects, fetchProjects } = useProjectsStore();
-  const [project, setProject] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: project, isLoading: loading } = useProject(id);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const loadProject = async () => {
-      if (projects.length === 0) {
-        await fetchProjects();
-      }
-      const foundProject = projects.find((p) => p._id === id);
-      setProject(foundProject);
-      setLoading(false);
-    };
-    loadProject();
-  }, [id, projects, fetchProjects]);
+  }, [id]);
+
   const images = project?.images?.length ? project.images : [project?.image];
-  const [currentIndex, setCurrentIndex] = useState(0);
   const prev = () =>
-    setCurrentIndex((i) => (i - 1 + images.length) % images.length);
-  const next = () => setCurrentIndex((i) => (i + 1) % images.length);
+    setCurrentIndex(
+      (i) => (i - 1 + (images?.length || 1)) % (images?.length || 1),
+    );
+  const next = () => setCurrentIndex((i) => (i + 1) % (images?.length || 1));
   const videoId = project?.videoUrl ? getYouTubeId(project.videoUrl) : null;
 
   if (loading) {

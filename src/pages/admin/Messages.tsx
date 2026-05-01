@@ -10,6 +10,7 @@ import {
   HiX,
   HiChevronDown,
   HiChevronUp,
+  HiChatAlt2,
 } from "react-icons/hi";
 import { Input } from "@/components/ui/input";
 import { useMessagesStore, Message } from "@/stores/messagesStore";
