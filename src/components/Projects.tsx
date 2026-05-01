@@ -47,6 +47,11 @@ const Projects = () => {
       ref={elementRef}
       className={`relative py-24 section-fade-in ${isVisible ? "visible" : ""}  bg-gradient-to-br from-primary/10 via-background to-accent/10 overflow-hidden`}
     >
+      <img
+        src={backgrounds.bg05}
+        className="absolute object-cover w-full h-full opacity-20 top-0 left-0 z-0"
+        alt="bg"
+      />
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />

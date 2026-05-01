@@ -4,7 +4,7 @@ import { HiArrowDown, HiMail } from "react-icons/hi";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import myImg from "@/assets/my-img.png";
 import bgImag from "@/assets/bg-01.jpg";
-import { objects } from "@/assets/assets";
+import { mylogos, objects } from "@/assets/assets";
 
 const Hero = () => {
   return (
@@ -15,9 +15,10 @@ const Hero = () => {
         src={bgImag}
         className="absolute object-cover w-full h-full rotate-180 lg:rotate-0"
       />
+
       <img
-        src={objects.obj2}
-        className="absolute w-[900px] rotate-180 object-contain -top-0 -left-[20%] opacity-5"
+        src={mylogos.logo}
+        className="absolute w-[800px] md:w-[800px] lg:w-[800px] object-contain -bottom-3 right-0 md:-right-56 lg:right-[5%] opacity-10"
       />
 
       <div className="container mx-auto px-6 relative z-10 pt-24 md:pt-20 lg:pt-0">

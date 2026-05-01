@@ -174,9 +174,9 @@ const Experience = () => {
       className={`relative py-24 bg-secondary/20 overflow-hidden section-fade-in ${isVisible ? "visible" : ""}`}
     >
       <img
-        src={backgrounds.bg04}
-        className="absolute object-cover w-full h-full opacity-5 top-0 left-0 z-0"
-        alt=""
+        src={backgrounds.bg08}
+        className="absolute object-cover w-full h-full opacity-20 top-0 left-0 z-0"
+        alt="bg"
       />
       <div className="absolute top-1/3 -left-24 w-80 h-80 rounded-full bg-violet-600/8 blur-[100px] pointer-events-none z-0" />
       <div className="absolute bottom-1/3 -right-24 w-80 h-80 rounded-full bg-sky-600/8 blur-[100px] pointer-events-none z-0" />
@@ -197,7 +197,8 @@ const Experience = () => {
           <div className="space-y-12">
             {timeline.map((entry, index) => {
               const isLeft = index % 2 === 0;
-              const Icon = entry.type === "work" ? HiBriefcase : FaGraduationCap;
+              const Icon =
+                entry.type === "work" ? HiBriefcase : FaGraduationCap;
 
               return (
                 <div

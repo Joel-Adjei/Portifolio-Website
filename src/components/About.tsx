@@ -3,7 +3,7 @@ import { HiCode, HiLightBulb, HiUserGroup } from "react-icons/hi";
 import { FaCoffee } from "react-icons/fa";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import aboutImg from "@/assets/about-img.png";
-import { objects } from "@/assets/assets";
+import { backgrounds, objects } from "@/assets/assets";
 import Header from "./common/Header";
 
 const About = () => {
@@ -44,6 +44,11 @@ const About = () => {
         ref={elementRef}
         className={`relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-accent/10 section-fade-in ${isVisible ? "visible" : ""}`}
       >
+        <img
+          src={backgrounds.bg03}
+          className="absolute object-cover w-full h-full opacity-25 top-0 left-0 z-0"
+          alt="bg"
+        />
         <img
           src={objects.obj3}
           className="absolute rotate-42 object-contain -right-44 -top-32 opacity-20"

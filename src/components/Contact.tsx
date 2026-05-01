@@ -94,9 +94,9 @@ const Contact = () => {
       className={`py-20 bg-secondary/30 section-fade-in ${isVisible ? "visible" : ""}`}
     >
       <img
-        src={backgrounds.bg04}
-        className="absolute object-cover w-full h-full opacity-5 top-0 left-0 z-0"
-        alt=""
+        src={backgrounds.bg03}
+        className="absolute object-cover w-full h-full opacity-25 top-0 left-0 z-0"
+        alt="bg"
       />
 
       <div className="container mx-auto px-6 lg:px-[76px]">
