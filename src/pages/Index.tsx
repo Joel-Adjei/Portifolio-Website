@@ -8,6 +8,7 @@ import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
 // import Blog from "@/components/Blog";
 import Contact from "@/components/Contact";
+import { backgrounds } from "@/assets/assets";
 
 const Index = () => {
   useEffect(() => {
@@ -92,13 +93,18 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="py-20 bg-background">
+        <section className="relative py-12 bg-background">
+          <img
+            src={backgrounds.bg03}
+            className="absolute object-cover w-full h-full opacity-20 top-0 left-0 z-0"
+            alt="bg"
+          />
           <div className="container mx-auto px-6 lg:px-[76px] text-center">
             <div className="max-w-3xl mx-auto">
               <span className="text-6xl text-primary/30 font-serif leading-none select-none">
                 "
               </span>
-              <p className="text-2xl md:text-3xl font-medium text-foreground/80 italic leading-relaxed -mt-4">
+              <p className="text-lg md:text-xl font-medium text-foreground/80 italic leading-relaxed -mt-4">
                 The best way to predict the future is to invent it.
               </p>
               <span className="text-6xl text-primary/30 font-serif leading-none select-none rotate-180 inline-block">

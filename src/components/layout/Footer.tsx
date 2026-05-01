@@ -1,4 +1,9 @@
-import { HiMail, HiPhone, HiLocationMarker, HiExternalLink } from "react-icons/hi";
+import {
+  HiMail,
+  HiPhone,
+  HiLocationMarker,
+  HiExternalLink,
+} from "react-icons/hi";
 import { FaGithub, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -20,7 +25,11 @@ const Footer = () => {
       href: "https://linkedin.com/in/joel-adjei",
       label: "LinkedIn",
     },
-    { icon: FaTwitter, href: "https://twitter.com/joel_adjei", label: "Twitter" },
+    {
+      icon: FaTwitter,
+      href: "https://twitter.com/joel_adjei",
+      label: "Twitter",
+    },
   ];
 
   const contactInfo = [
@@ -41,7 +50,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-secondary/20 border-t border-border pt-16 pb-8 relative overflow-hidden">
+    <footer className="bg-blue-950/30 border-t border-border pt-16 pb-8 relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />

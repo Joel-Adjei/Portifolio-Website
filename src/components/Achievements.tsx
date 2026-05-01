@@ -129,8 +129,8 @@ const Achievements = () => {
       {/* Background Elements */}
       <img
         src={backgrounds.bg03}
-        className="absolute object-cover w-full h-full opacity-5 top-0 left-0 z-0"
-        alt=""
+        className="absolute object-cover w-full h-full opacity-20 top-0 left-0 z-0"
+        alt="bg"
       />
       <div className="absolute top-1/4 -right-24 w-96 h-96 rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-24 w-96 h-96 rounded-full bg-accent/10 blur-[100px] pointer-events-none" />
