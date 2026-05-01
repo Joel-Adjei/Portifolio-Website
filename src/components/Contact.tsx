@@ -12,13 +12,12 @@ import {
 } from "react-icons/hi";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { backgrounds } from "@/assets/assets";
-import { useMessagesStore } from "@/stores/messagesStore";
+import { useSendMessage } from "@/hooks/queries";
 import { useToast } from "@/hooks/use-toast";
-import { api } from "@/lib/api";
 
 const Contact = () => {
   const { elementRef, isVisible } = useIntersectionObserver();
-  const addMessage = useMessagesStore((s) => s.addMessage);
+  const sendMessage = useSendMessage();
   const { toast } = useToast();
   const [form, setForm] = useState({
     firstName: "",
@@ -27,7 +26,6 @@ const Contact = () => {
     subject: "",
     message: "",
   });
-  const [sending, setSending] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -44,16 +42,9 @@ const Contact = () => {
       });
       return;
     }
-    setSending(true);
-    try {
-      const response = await api.sendMessage(form);
-      if (response.error) {
-        toast({
-          title: "Failed to send message",
-          description: response.error,
-          variant: "destructive",
-        });
-      } else {
+
+    sendMessage.mutate(form, {
+      onSuccess: () => {
         toast({
           title: "Message sent!",
           description: "Thanks for reaching out. I'll get back to you soon.",
@@ -65,16 +56,16 @@ const Contact = () => {
           subject: "",
           message: "",
         });
-      }
-    } catch (error) {
-      toast({
-        title: "Failed to send message",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setSending(false);
-    }
+      },
+      onError: (error) => {
+        toast({
+          title: "Failed to send message",
+          description:
+            error instanceof Error ? error.message : "Please try again later.",
+          variant: "destructive",
+        });
+      },
+    });
   };
   const contactInfo = [
     {
@@ -170,8 +161,8 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <Card className="skill-card" style={{ animationDelay: "0.4s" }}>
-            <CardHeader>
+          <Card className="skill-card z-10" style={{ animationDelay: "0.4s" }}>
+            <CardHeader className="z-20">
               <CardTitle className="flex items-center gap-2">
                 <HiPaperAirplane className="h-5 w-5 text-primary" />
                 Send me a message
@@ -179,8 +170,8 @@ const Contact = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-4 ">
+                  <div className="space-y-2 z-10">
                     <Label htmlFor="firstName">First Name *</Label>
                     <Input
                       id="firstName"
@@ -216,7 +207,7 @@ const Contact = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 z-10">
                   <Label htmlFor="subject">Subject</Label>
                   <Input
                     id="subject"
@@ -243,9 +234,9 @@ const Contact = () => {
                 <Button
                   type="submit"
                   className="w-full glow-effect group"
-                  disabled={sending}
+                  disabled={sendMessage.isPending}
                 >
-                  {sending ? "Sending..." : "Send Message"}
+                  {sendMessage.isPending ? "Sending..." : "Send Message"}
                   <HiPaperAirplane className="ml-2 h-4 w-4 group-hover:translate-x-1 smooth-transition" />
                 </Button>
               </form>

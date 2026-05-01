@@ -27,8 +27,11 @@ interface ProjectsState {
   loading: boolean;
   error: string | null;
   fetchProjects: () => Promise<void>;
-  addProject: (formData: FormData) => Promise<void>;
-  updateProject: (id: string, formData: FormData) => Promise<void>;
+  addProject: (payload: FormData | Record<string, any>) => Promise<void>;
+  updateProject: (
+    id: string,
+    payload: FormData | Record<string, any>,
+  ) => Promise<void>;
   deleteProject: (id: string) => Promise<void>;
 }
 

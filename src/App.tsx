@@ -12,6 +12,7 @@ import RootLayout from "./components/layout/RootLayout";
 import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import ProjectsPage from "./pages/admin/Projects";
+import CreateProject from "./pages/admin/CreateProject";
 import MessagesPage from "./pages/admin/Messages";
 // import BlogPage from "./pages/Blog";
 // import BlogPost from "./pages/BlogPost";
@@ -38,6 +39,7 @@ const App = () => (
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="projects" element={<ProjectsPage />} />
+            <Route path="projects/create" element={<CreateProject />} />
             <Route path="messages" element={<MessagesPage />} />
           </Route>
 

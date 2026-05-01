@@ -12,6 +12,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { HiPaperAirplane, HiMail, HiPhone, HiSparkles } from "react-icons/hi";
 import { toast } from "sonner";
+import { useSendMessage } from "@/hooks/queries";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -19,19 +22,39 @@ interface ContactModalProps {
 }
 
 const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { mutateAsync } = useSendMessage();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast.success("Message sent successfully! I'll get back to you soon.");
-      onOpenChange(false);
-    }, 1500);
-  };
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      subject: "",
+      email: "",
+      message: "",
+    },
+    validationSchema: yup.object({
+      firstName: yup.string().required("First name is required"),
+      subject: yup.string().required("Subject is required"),
+      lastName: yup.string().required("Last name is required"),
+      email: yup
+        .string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      message: yup.string().required("Message is required"),
+    }),
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
+      try {
+        await mutateAsync(values);
+        toast.success("Message sent successfully! I'll get back to you soon.");
+        onOpenChange(false);
+      } catch (error) {
+        toast.error("Failed to send message. Please try again.");
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -79,7 +102,7 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
                 </DialogDescription>
               </DialogHeader>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={formik.handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label
@@ -91,6 +114,9 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
                     <Input
                       id="firstName"
                       placeholder="Joel"
+                      value={formik.values.firstName}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       required
                       className="bg-secondary/50 border-border/50 focus:border-primary/50 smooth-transition"
                     />
@@ -105,6 +131,9 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
                     <Input
                       id="lastName"
                       placeholder="Adjei"
+                      value={formik.values.lastName}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       required
                       className="bg-secondary/50 border-border/50 focus:border-primary/50 smooth-transition"
                     />
@@ -122,6 +151,9 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
                     id="email"
                     type="email"
                     placeholder="hello@example.com"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     required
                     className="bg-secondary/50 border-border/50 focus:border-primary/50 smooth-transition"
                   />
@@ -137,6 +169,9 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
                   <Input
                     id="subject"
                     placeholder="How can I help you?"
+                    value={formik.values.subject}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     required
                     className="bg-secondary/50 border-border/50 focus:border-primary/50 smooth-transition"
                   />
@@ -152,6 +187,9 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
                   <Textarea
                     id="message"
                     placeholder="Your message here..."
+                    value={formik.values.message}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     required
                     rows={4}
                     className="bg-secondary/50 border-border/50 focus:border-primary/50 smooth-transition resize-none"
@@ -160,16 +198,16 @@ const ContactModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
 
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={formik.isSubmitting}
                   className="w-full h-12 mt-4 glow-effect group overflow-hidden relative"
                 >
                   <span
-                    className={`flex items-center justify-center transition-all duration-300 ${isSubmitting ? "opacity-0 -translate-y-full" : "opacity-100 translate-y-0"}`}
+                    className={`flex items-center justify-center transition-all duration-300 ${formik.isSubmitting ? "opacity-0 -translate-y-full" : "opacity-100 translate-y-0"}`}
                   >
                     Send Message
                     <HiPaperAirplane className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                   </span>
-                  {isSubmitting && (
+                  {formik.isSubmitting && (
                     <span className="absolute inset-0 flex items-center justify-center animate-in fade-in slide-in-from-bottom-2">
                       Sending...
                     </span>

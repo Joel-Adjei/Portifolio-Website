@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,14 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useProjectsStore } from "@/stores/projectsStore";
 import {
   Select,
@@ -27,8 +19,6 @@ import {
   HiCalendar,
   HiUser,
   HiExternalLink,
-  HiTrash,
-  HiPencil,
   HiPlus,
   HiX,
 } from "react-icons/hi";
@@ -36,20 +26,8 @@ import { FaGithub } from "react-icons/fa";
 import { MdColorLens } from "react-icons/md";
 
 export default function ProjectsAdmin() {
-  const {
-    projects,
-    loading,
-    fetchProjects,
-    addProject,
-    updateProject,
-    deleteProject,
-  } = useProjectsStore();
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const { addProject } = useProjectsStore();
   const { toast } = useToast();
-
-  useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
 
   // Form state
   const [type, setType] = useState<"development" | "design">("development");
@@ -61,8 +39,9 @@ export default function ProjectsAdmin() {
   const [client, setClient] = useState("");
   const [techInput, setTechInput] = useState("");
   const [technologies, setTechnologies] = useState<string[]>([]);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imageUrl, setImageUrl] = useState("");
+  const [additionalImageUrl, setAdditionalImageUrl] = useState("");
+  const [additionalImageUrls, setAdditionalImageUrls] = useState<string[]>([]);
   const [githubUrl, setGithubUrl] = useState("");
   const [liveUrl, setLiveUrl] = useState("");
   const [behanceUrl, setBehanceUrl] = useState("");
@@ -79,35 +58,15 @@ export default function ProjectsAdmin() {
     setClient("");
     setTechnologies([]);
     setTechInput("");
-    setImageFile(null);
-    setImageFiles([]);
+    setImageUrl("");
+    setAdditionalImageUrl("");
+    setAdditionalImageUrls([]);
     setGithubUrl("");
     setLiveUrl("");
     setBehanceUrl("");
     setPreviewUrl("");
     setVideoUrl("");
     setType("development");
-    setEditingId(null);
-  };
-
-  const loadProjectForEdit = (projectId: string) => {
-    const project = projects.find((p) => p._id === projectId);
-    if (!project) return;
-
-    setEditingId(projectId);
-    setType(project.type as "development" | "design");
-    setTitle(project.title);
-    setDescription(project.description);
-    setLongDescription(project.longDescription);
-    setCategory(project.category);
-    setDate(project.date);
-    setClient(project.client);
-    setTechnologies(project.technologies);
-    setGithubUrl(project.githubUrl || "");
-    setLiveUrl(project.liveUrl || "");
-    setBehanceUrl(project.behanceUrl || "");
-    setPreviewUrl(project.previewUrl || "");
-    setVideoUrl(project.videoUrl || "");
   };
 
   const handleAddTechnology = () => {
@@ -121,8 +80,21 @@ export default function ProjectsAdmin() {
     setTechnologies(technologies.filter((t) => t !== tech));
   };
 
+  const handleAddImageUrl = () => {
+    const url = additionalImageUrl.trim();
+    if (!url) return;
+    if (!additionalImageUrls.includes(url)) {
+      setAdditionalImageUrls([...additionalImageUrls, url]);
+    }
+    setAdditionalImageUrl("");
+  };
+
+  const handleRemoveImageUrl = (url: string) => {
+    setAdditionalImageUrls(additionalImageUrls.filter((item) => item !== url));
+  };
+
   const handleSubmit = async () => {
-    if (!title || !description || !category || !imageFile) {
+    if (!title || !description || !category || !imageUrl) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -133,30 +105,26 @@ export default function ProjectsAdmin() {
 
     setSubmitting(true);
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("description", description);
-      formData.append("longDescription", longDescription);
-      formData.append("category", category);
-      formData.append("type", type);
-      formData.append("date", date);
-      formData.append("client", client);
-      formData.append("technologies", technologies.join(","));
-      formData.append("image", imageFile);
-      imageFiles.forEach((file) => formData.append("images", file));
-      if (githubUrl) formData.append("githubUrl", githubUrl);
-      if (liveUrl) formData.append("liveUrl", liveUrl);
-      if (behanceUrl) formData.append("behanceUrl", behanceUrl);
-      if (previewUrl) formData.append("previewUrl", previewUrl);
-      if (videoUrl) formData.append("videoUrl", videoUrl);
+      const payload = {
+        title,
+        description,
+        longDescription,
+        category,
+        type,
+        date,
+        client,
+        technologies,
+        image: imageUrl,
+        images: additionalImageUrls,
+        githubUrl,
+        liveUrl,
+        behanceUrl,
+        previewUrl,
+        videoUrl,
+      };
 
-      if (editingId) {
-        await updateProject(editingId, formData);
-        toast({ title: "Success", description: "Project updated!" });
-      } else {
-        await addProject(formData);
-        toast({ title: "Success", description: "Project added!" });
-      }
+      await addProject(payload);
+      toast({ title: "Success", description: "Project added!" });
 
       resetForm();
     } catch (error) {
@@ -170,29 +138,12 @@ export default function ProjectsAdmin() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteProject(id);
-      toast({ title: "Success", description: "Project deleted!" });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete project",
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          {editingId ? (
-            <HiPencil className="h-5 w-5" />
-          ) : (
-            <HiPlus className="h-5 w-5" />
-          )}
-          {editingId ? "Edit Project" : "Create New Project"}
+          <HiPlus className="h-5 w-5" />
+          Create New Project
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -321,26 +272,64 @@ export default function ProjectsAdmin() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="image">Cover Image *</Label>
+              <Label htmlFor="imageUrl">Cover Image URL *</Label>
               <Input
-                id="image"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                id="imageUrl"
+                placeholder="https://example.com/cover.jpg"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
               />
+              {imageUrl ? (
+                <div className="mt-2 w-36 h-24 overflow-hidden rounded-lg border bg-muted">
+                  <img
+                    src={imageUrl}
+                    alt="Cover preview"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) : null}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="images">Additional Images</Label>
-              <Input
-                id="images"
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={(e) =>
-                  setImageFiles(Array.from(e.target.files || []))
-                }
-              />
+              <Label htmlFor="additionalImageUrl">Additional Image URLs</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="additionalImageUrl"
+                  placeholder="https://example.com/image.jpg"
+                  value={additionalImageUrl}
+                  onChange={(e) => setAdditionalImageUrl(e.target.value)}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" &&
+                    (e.preventDefault(), handleAddImageUrl())
+                  }
+                />
+                <Button type="button" onClick={handleAddImageUrl} size="icon">
+                  <HiPlus className="h-4 w-4" />
+                </Button>
+              </div>
+              {additionalImageUrls.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+                  {additionalImageUrls.map((url) => (
+                    <div
+                      key={url}
+                      className="relative overflow-hidden rounded-lg border bg-muted"
+                    >
+                      <img
+                        src={url}
+                        alt="Additional preview"
+                        className="h-24 w-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        className="absolute right-1 top-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-muted-foreground shadow"
+                        onClick={() => handleRemoveImageUrl(url)}
+                      >
+                        <HiX className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -467,82 +456,8 @@ export default function ProjectsAdmin() {
             className="flex-1"
             disabled={submitting}
           >
-            {submitting
-              ? "Saving..."
-              : editingId
-                ? "Update Project"
-                : "Create Project"}
+            {submitting ? "Saving..." : "Create Project"}
           </Button>
-          {editingId && (
-            <Button onClick={resetForm} variant="outline" disabled={submitting}>
-              Cancel
-            </Button>
-          )}
-        </div>
-
-        {/* Projects List */}
-        <div className="mt-8 space-y-4">
-          <h3 className="text-lg font-semibold">Existing Projects</h3>
-          <div className="border rounded-lg">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {projects.map((project) => (
-                  <TableRow key={project._id}>
-                    <TableCell className="font-medium">
-                      {project.title}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          project.type === "development"
-                            ? "default"
-                            : "secondary"
-                        }
-                      >
-                        {project.type === "development" ? (
-                          <HiCode className="h-3 w-3 mr-1" />
-                        ) : (
-                          <MdColorLens className="h-3 w-3 mr-1" />
-                        )}
-                        {project.type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{project.category}</TableCell>
-                    <TableCell>
-                      {new Date(project.date).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => loadProjectForEdit(project._id)}
-                        >
-                          <HiPencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleDelete(project._id)}
-                        >
-                          <HiTrash className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
         </div>
       </CardContent>
     </Card>
