@@ -43,7 +43,7 @@ export const useProjectsStore = create<ProjectsState>((set, get) => ({
   fetchProjects: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await api.getProjects();
+      const response: any = await api.getProjects();
       if (response.error) {
         set({ error: response.error, loading: false });
       } else {

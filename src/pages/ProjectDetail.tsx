@@ -15,6 +15,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { error } from "@/assets/assets";
 import { useEffect, useState } from "react";
 import { useProject } from "@/hooks/queries";
+import { useAdminStore } from "@/stores/adminStore";
 
 const getYouTubeId = (url: string) => {
   const match = url.match(
@@ -28,6 +29,7 @@ const ProjectDetail = () => {
   const { id } = useParams();
   const { data: project, isLoading: loading } = useProject(id);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isAdmin = useAdminStore((store) => store.isAdmin);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -122,6 +124,16 @@ const ProjectDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Back button */}
+      {isAdmin && (
+        <Button
+          variant="ghost"
+          onClick={() => navigate(-1)}
+          className="smooth-transition hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
+        >
+          <HiArrowLeft className="mr-2 h-4 w-4" />
+          Back to Projects
+        </Button>
+      )}
 
       {/* Hero Section */}
       <section className="">
@@ -134,14 +146,16 @@ const ProjectDetail = () => {
           <div className="h-[620px] w-full bg-gradient-to-t from-black to-black/0 left-0 absolute bottom-0 z-10" />
 
           <div className="absolute top-14 left-0 px-6 py-4">
-            <Button
-              variant="ghost"
-              onClick={() => navigate(-1)}
-              className="smooth-transition hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
-            >
-              <HiArrowLeft className="mr-2 h-4 w-4" />
-              Back to Portfolio
-            </Button>
+            {isAdmin ? null : (
+              <Button
+                variant="ghost"
+                onClick={() => navigate(-1)}
+                className="smooth-transition hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
+              >
+                <HiArrowLeft className="mr-2 h-4 w-4" />
+                Back to Portfolio
+              </Button>
+            )}
           </div>
           <div className="grid lg:grid-cols-2 gap-12 items-center mt-36 pb-7  z-20">
             <div className="space-y-6 slide-up  z-20">
