@@ -14,6 +14,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import ProjectsPage from "./pages/admin/Projects";
 import CreateProject from "./pages/admin/CreateProject";
 import MessagesPage from "./pages/admin/Messages";
+import EditProject from "./pages/admin/EditProject";
 // import BlogPage from "./pages/Blog";
 // import BlogPost from "./pages/BlogPost";
 
@@ -40,6 +41,8 @@ const App = () => (
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="projects/create" element={<CreateProject />} />
+            <Route path="projects/:id" element={<ProjectDetail />} />
+            <Route path="projects/:id/edit" element={<EditProject />} />
             <Route path="messages" element={<MessagesPage />} />
           </Route>
 
