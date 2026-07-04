@@ -87,7 +87,7 @@ const ProjectDetail = () => {
           </div>
 
           {/* Action Button */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <div className="flex flex-col sm:flex-row gap-4 items-center z-30">
             <Button
               size="lg"
               className="rounded-full px-8 h-12 text-base font-semibold glow-effect hover:scale-105 transition-all"
@@ -128,7 +128,7 @@ const ProjectDetail = () => {
         <Button
           variant="ghost"
           onClick={() => navigate(-1)}
-          className="smooth-transition hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
+          className="smooth-transition z-30 cursor-pointer hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
         >
           <HiArrowLeft className="mr-2 h-4 w-4" />
           Back to Projects
@@ -141,16 +141,16 @@ const ProjectDetail = () => {
           <img
             src={project.image}
             alt={project.title}
-            className="absolute h-full w-full left-0 object-cover top-0 z-0 opacity-30 lg:opacity-100"
+            className="absolute h-full w-full left-0 object-cover top-0 z-0 opacity-30 lg:opacity-50"
           />
           <div className="h-[620px] w-full bg-gradient-to-t from-black to-black/0 left-0 absolute bottom-0 z-10" />
 
-          <div className="absolute top-14 left-0 px-6 py-4">
+          <div className="absolute z-30 top-14 left-0 px-6 py-4">
             {isAdmin ? null : (
               <Button
                 variant="ghost"
                 onClick={() => navigate(-1)}
-                className="smooth-transition hover:glow-effect hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
+                className="smooth-transition hover:glow-effect  cursor-pointer hover:bg-gray-700/30 hover:border border-blue-400 hover:text-white"
               >
                 <HiArrowLeft className="mr-2 h-4 w-4" />
                 Back to Portfolio

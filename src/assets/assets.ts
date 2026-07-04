@@ -41,6 +41,24 @@ import vscode from "./objects/vscode.png";
 import logo from "./logo.png";
 import logoText from "./logo-text.png";
 
+import gyasi_img1 from "./projects_images/gyasi_img_01.png";
+import gyasi_img2 from "./projects_images/gyasi_img_02.png";
+import gyasi_img3 from "./projects_images/gyasi_img_03.png";
+
+import laundry_img1 from "./projects_images/laundry_img_01.png";
+import laundry_img2 from "./projects_images/laundry_img_02.png";
+import laundry_img3 from "./projects_images/laundry_img_03.png";
+
+import chat2_img1 from "./projects_images/chat2_img_01.png";
+import chat2_img2 from "./projects_images/chat2_img_02.png";
+
+import hero_img1 from "./projects_images/hero_img_01.png";
+import hero_img2 from "./projects_images/hero_img_02.png";
+import hero_img3 from "./projects_images/hero_img_03.png";
+import hero_img4 from "./projects_images/hero_img_04.png";
+
+import sts_img1 from "./projects_images/sts_img_01.png";
+
 export const backgrounds = { bg01, bg02, bg03, bg04, bg05, bg06, bg07, bg08 };
 
 export const heroes = { heroPlaceholder };
@@ -57,6 +75,34 @@ export const projects = {
   project5,
   project6,
   project7,
+};
+
+export const gyasiConstruction = {
+  gyasi_img1,
+  gyasi_img2,
+  gyasi_img3,
+};
+
+export const laundryWeb = {
+  laundry_img1,
+  laundry_img2,
+  laundry_img3,
+};
+
+export const chatApp2 = {
+  chat2_img1,
+  chat2_img2,
+};
+
+export const heroWeb = {
+  hero_img1,
+  hero_img2,
+  hero_img3,
+  hero_img4,
+};
+
+export const stsClone = {
+  sts_img1,
 };
 
 export const icons = { code, css, cursor, figma, html, ps, react, vscode };

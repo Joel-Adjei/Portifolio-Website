@@ -11,6 +11,7 @@ import {
 import ProjectCard from "@/components/ui/ProjectCard";
 import { backgrounds, objects } from "@/assets/assets";
 import { useProjects } from "@/hooks/queries";
+import { projectDetails } from "@/data/project-details";
 
 const AllProjects = () => {
   const { elementRef, isVisible } = useIntersectionObserver();
@@ -120,7 +121,8 @@ const AllProjects = () => {
             </p>
           ) : (
             <p className="text-center text-muted-foreground py-20">
-              No projects match your search.
+              Please check back later, as I am continuously working on new
+              projects to showcase my skills and expertise.
             </p>
           )}
         </div>
