@@ -20,7 +20,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
     <Card
       className="skill-card group overflow-hidden border-border/50 cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-500 p-0"
       style={{ animationDelay: `${index * 0.1}s` }}
-      onClick={() => navigate(`/project/${project._id}`)}
+      onClick={() => navigate(`/project/${project.id}`)}
     >
       <div className="aspect-video relative overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
         <img

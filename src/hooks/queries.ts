@@ -1,14 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import { projectDetails } from "@/data/project-details";
 
 // Project Queries
 export const useProjects = () => {
   return useQuery({
     queryKey: ["projects"],
     queryFn: async () => {
-      const response: any = await api.getProjects();
-      if (response.error) throw new Error(response.error);
-      return response.data?.projects || [];
+      // const response: any = await api.getProjects();
+      // if (response.error) throw new Error(response.error);
+      // return response.data?.projects || [];
+      return projectDetails || [];
     },
   });
 };
@@ -18,9 +20,9 @@ export const useProject = (id: string | undefined) => {
     queryKey: ["project", id],
     queryFn: async () => {
       if (!id) throw new Error("Project ID is required");
-      const response: any = await api.getProject(id);
+      const response: any = projectDetails.find((project) => project.id === id);
       if (response.error) throw new Error(response.error);
-      return response.data?.project;
+      return response || null;
     },
     enabled: !!id,
   });
