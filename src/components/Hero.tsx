@@ -45,13 +45,13 @@ const Hero = () => {
               {/*  View My Work*/}
               {/*  <ArrowDown className="ml-2 h-4 w-4 group-hover:translate-y-1 smooth-transition" />*/}
               {/*</Button>*/}
-              <Button
+              {/* <Button
                 variant="outline"
                 size="lg"
                 className="smooth-transition hover:glow-effect"
               >
                 Download CV
-              </Button>
+              </Button> */}
             </div>
 
             <div className="flex gap-4 justify-center lg:justify-start">
