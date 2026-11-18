@@ -1,37 +1,15 @@
 import { create } from "zustand";
-import { api } from "@/lib/api";
+import { api, Project, ProjectInput } from "@/lib/api";
 
-export interface Project {
-  _id: string;
-  title: string;
-  description: string;
-  longDescription: string;
-  image: string;
-  images: string[];
-  videoUrl?: string;
-  technologies: string[];
-  date: string;
-  client: string;
-  category: string;
-  type: string;
-  githubUrl?: string;
-  liveUrl?: string;
-  behanceUrl?: string;
-  previewUrl?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+export type { Project };
 
 interface ProjectsState {
   projects: Project[];
   loading: boolean;
   error: string | null;
   fetchProjects: () => Promise<void>;
-  addProject: (payload: FormData | Record<string, any>) => Promise<void>;
-  updateProject: (
-    id: string,
-    payload: FormData | Record<string, any>,
-  ) => Promise<void>;
+  addProject: (payload: ProjectInput) => Promise<void>;
+  updateProject: (id: string, payload: ProjectInput) => Promise<void>;
   deleteProject: (id: string) => Promise<void>;
 }
 
@@ -43,22 +21,22 @@ export const useProjectsStore = create<ProjectsState>((set, get) => ({
   fetchProjects: async () => {
     set({ loading: true, error: null });
     try {
-      const response: any = await api.getProjects();
+      const response = await api.getProjects();
       if (response.error) {
         set({ error: response.error, loading: false });
       } else {
-        set({ projects: response.data!.projects, loading: false });
+        set({ projects: response.data?.projects ?? [], loading: false });
       }
     } catch (error) {
       set({ error: "Failed to fetch projects", loading: false });
     }
   },
 
-  addProject: async (formData) => {
+  addProject: async (payload) => {
     try {
-      const response = await api.createProject(formData);
+      const response = await api.createProject(payload);
       if (!response.error) {
-        await get().fetchProjects(); // Refresh the list
+        await get().fetchProjects();
       } else {
         throw new Error(response.error);
       }
@@ -68,11 +46,11 @@ export const useProjectsStore = create<ProjectsState>((set, get) => ({
     }
   },
 
-  updateProject: async (id, formData) => {
+  updateProject: async (id, payload) => {
     try {
-      const response = await api.updateProject(id, formData);
+      const response = await api.updateProject(id, payload);
       if (!response.error) {
-        await get().fetchProjects(); // Refresh the list
+        await get().fetchProjects();
       } else {
         throw new Error(response.error);
       }
@@ -87,7 +65,7 @@ export const useProjectsStore = create<ProjectsState>((set, get) => ({
       const response = await api.deleteProject(id);
       if (!response.error) {
         set((state) => ({
-          projects: state.projects.filter((p) => p._id !== id),
+          projects: state.projects.filter((p) => p.id !== id),
         }));
       } else {
         throw new Error(response.error);

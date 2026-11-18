@@ -77,9 +77,9 @@ export default function ProjectAdmin() {
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {projects.map((project) => (
             <Card
-              key={project._id}
+              key={project.id}
               className="overflow-hidden cursor-pointer"
-              onClick={() => navigate(`/admin/projects/${project._id}`)}
+              onClick={() => navigate(`/admin/projects/${project.id}`)}
             >
               <div className="h-48 overflow-hidden bg-muted">
                 <img
@@ -189,7 +189,7 @@ export default function ProjectAdmin() {
                       size="sm"
                       onClick={(event) => {
                         event.stopPropagation();
-                        navigate(`/admin/projects/${project._id}/edit`);
+                        navigate(`/admin/projects/${project.id}/edit`);
                       }}
                     >
                       Edit
@@ -199,7 +199,7 @@ export default function ProjectAdmin() {
                       size="sm"
                       onClick={(event) => {
                         event.stopPropagation();
-                        handleDelete(project._id);
+                        handleDelete(project.id);
                       }}
                     >
                       <HiTrash className="h-4 w-4" />
