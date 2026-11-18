@@ -90,7 +90,7 @@ const Projects = () => {
                 const isActive = index === current;
                 return (
                   <CarouselItem
-                    key={project._id}
+                    key={project.id}
                     className="pl-4 md:pl-8 basis-full sm:basis-[85%] md:basis-[65%] lg:basis-[50%] transition-all duration-700 ease-out"
                     style={{
                       transform: isActive ? "scale(1.05)" : "scale(0.9)",

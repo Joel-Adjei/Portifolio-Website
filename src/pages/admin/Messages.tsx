@@ -45,7 +45,7 @@ function MessageRow({
 
   const handleExpand = () => {
     setExpanded((v) => !v);
-    if (!msg.read) onRead(msg._id);
+    if (!msg.read) onRead(msg.id);
   };
 
   return (
@@ -131,7 +131,7 @@ function MessageRow({
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onRead(msg._id);
+                  onRead(msg.id);
                 }}
               >
                 <HiMailOpen className="h-4 w-4 mr-2" />
@@ -143,7 +143,7 @@ function MessageRow({
               size="sm"
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(msg._id);
+                onDelete(msg.id);
               }}
             >
               <HiTrash className="h-4 w-4 mr-2" />
@@ -269,7 +269,7 @@ export default function MessagesPage() {
           ) : (
             filtered.map((msg) => (
               <MessageRow
-                key={msg._id}
+                key={msg.id}
                 msg={msg}
                 onRead={markAsRead}
                 onDelete={handleDelete}

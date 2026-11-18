@@ -10,6 +10,7 @@ import {
 } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
 import { useMe, useLogout, useMessages } from "@/hooks/queries";
+import { useAdminStore } from "@/stores/adminStore";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -22,24 +23,17 @@ export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
-  const { data: user } = useMe(!!localStorage.getItem("adminToken"));
+  const setIsAdmin = useAdminStore((state) => state.setIsAdmin);
+  const { data: user, isPending } = useMe();
   const { mutate: logout } = useLogout();
   const { data: messages = [] } = useMessages(!!user);
   const unreadCount = messages.filter((m) => !m.read).length;
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
+    if (!isPending && !user) {
       navigate("/auth");
     }
-  }, [navigate]);
-
-  useEffect(() => {
-    if (user === null) {
-      localStorage.removeItem("adminToken");
-      navigate("/auth");
-    }
-  }, [user, navigate]);
+  }, [isPending, user, navigate]);
 
   return (
     <div className="min-h-screen flex bg-background">
@@ -137,7 +131,7 @@ export default function AdminLayout() {
             onClick={() => {
               logout(undefined, {
                 onSuccess: () => {
-                  localStorage.removeItem("adminToken");
+                  setIsAdmin(false);
                   navigate("/");
                 },
               });

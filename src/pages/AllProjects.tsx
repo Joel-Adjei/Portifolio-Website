@@ -11,7 +11,6 @@ import {
 import ProjectCard from "@/components/ui/ProjectCard";
 import { backgrounds, objects } from "@/assets/assets";
 import { useProjects } from "@/hooks/queries";
-import { projectDetails } from "@/data/project-details";
 
 const AllProjects = () => {
   const { elementRef, isVisible } = useIntersectionObserver();

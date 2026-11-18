@@ -1,17 +1,7 @@
 import { create } from "zustand";
-import { api } from "@/lib/api";
+import { api, Message } from "@/lib/api";
 
-export interface Message {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  subject: string;
-  message: string;
-  date: string;
-  read: boolean;
-  createdAt: string;
-}
+export type { Message };
 
 interface MessagesState {
   messages: Message[];
@@ -19,13 +9,13 @@ interface MessagesState {
   error: string | null;
   fetchMessages: () => Promise<void>;
   addMessage: (
-    message: Omit<Message, "_id" | "date" | "read" | "createdAt">,
+    message: Omit<Message, "id" | "date" | "read" | "createdAt">,
   ) => void;
   markAsRead: (id: string) => Promise<void>;
   deleteMessage: (id: string) => Promise<void>;
 }
 
-export const useMessagesStore = create<MessagesState>((set, get) => ({
+export const useMessagesStore = create<MessagesState>((set) => ({
   messages: [],
   loading: false,
   error: null,
@@ -37,12 +27,7 @@ export const useMessagesStore = create<MessagesState>((set, get) => ({
       if (response.error) {
         set({ error: response.error, loading: false });
       } else {
-        const messages = response.data!.messages.map((msg: any) => ({
-          ...msg,
-          id: msg._id,
-          date: msg.createdAt,
-        }));
-        set({ messages, loading: false });
+        set({ messages: response.data?.messages ?? [], loading: false });
       }
     } catch (error) {
       set({ error: "Failed to fetch messages", loading: false });
@@ -50,17 +35,21 @@ export const useMessagesStore = create<MessagesState>((set, get) => ({
   },
 
   addMessage: (msg) =>
-    set((state) => ({
-      messages: [
-        {
-          ...msg,
-          id: crypto.randomUUID(),
-          date: new Date().toISOString(),
-          read: false,
-        },
-        ...state.messages,
-      ],
-    })),
+    set((state) => {
+      const now = new Date().toISOString();
+      return {
+        messages: [
+          {
+            ...msg,
+            id: crypto.randomUUID(),
+            date: now,
+            createdAt: now,
+            read: false,
+          },
+          ...state.messages,
+        ],
+      };
+    }),
 
   markAsRead: async (id) => {
     try {
@@ -68,7 +57,7 @@ export const useMessagesStore = create<MessagesState>((set, get) => ({
       if (!response.error) {
         set((state) => ({
           messages: state.messages.map((m) =>
-            m._id === id ? { ...m, read: true } : m,
+            m.id === id ? { ...m, read: true } : m,
           ),
         }));
       }
@@ -82,7 +71,7 @@ export const useMessagesStore = create<MessagesState>((set, get) => ({
       const response = await api.deleteMessage(id);
       if (!response.error) {
         set((state) => ({
-          messages: state.messages.filter((m) => m._id !== id),
+          messages: state.messages.filter((m) => m.id !== id),
         }));
       }
     } catch (error) {

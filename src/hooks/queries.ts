@@ -1,16 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/lib/api";
-import { projectDetails } from "@/data/project-details";
+import { api, ProjectInput, MessageInput } from "@/lib/api";
 
 // Project Queries
 export const useProjects = () => {
   return useQuery({
     queryKey: ["projects"],
     queryFn: async () => {
-      // const response: any = await api.getProjects();
-      // if (response.error) throw new Error(response.error);
-      // return response.data?.projects || [];
-      return projectDetails || [];
+      const response = await api.getProjects();
+      if (response.error) throw new Error(response.error);
+      return response.data?.projects ?? [];
     },
   });
 };
@@ -20,9 +18,9 @@ export const useProject = (id: string | undefined) => {
     queryKey: ["project", id],
     queryFn: async () => {
       if (!id) throw new Error("Project ID is required");
-      const response: any = projectDetails.find((project) => project.id === id);
+      const response = await api.getProject(id);
       if (response.error) throw new Error(response.error);
-      return response || null;
+      return response.data ?? null;
     },
     enabled: !!id,
   });
@@ -32,7 +30,7 @@ export const useCreateProject = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (formData: FormData) => api.createProject(formData),
+    mutationFn: (payload: ProjectInput) => api.createProject(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
     },
@@ -43,8 +41,8 @@ export const useUpdateProject = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, formData }: { id: string; formData: FormData }) =>
-      api.updateProject(id, formData),
+    mutationFn: ({ id, payload }: { id: string; payload: ProjectInput }) =>
+      api.updateProject(id, payload),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       queryClient.invalidateQueries({ queryKey: ["project", variables.id] });
@@ -68,9 +66,9 @@ export const useMessages = (enabled = true) => {
   return useQuery({
     queryKey: ["messages"],
     queryFn: async () => {
-      const response: any = await api.getMessages();
+      const response = await api.getMessages();
       if (response.error) throw new Error(response.error);
-      return response.data?.messages || [];
+      return response.data?.messages ?? [];
     },
     enabled,
   });
@@ -80,13 +78,7 @@ export const useSendMessage = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (messageData: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      subject?: string;
-      message: string;
-    }) => api.sendMessage(messageData),
+    mutationFn: (messageData: MessageInput) => api.sendMessage(messageData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
     },
@@ -138,9 +130,8 @@ export const useMe = (enabled = true) => {
   return useQuery({
     queryKey: ["me"],
     queryFn: async () => {
-      const response: any = await api.getMe();
-      if (response.error) throw new Error(response.error);
-      return response.data?.admin;
+      const response = await api.getMe();
+      return response.data?.admin ?? null;
     },
     enabled,
   });

@@ -24,10 +24,10 @@ import {
 } from "react-icons/hi";
 import { FaGithub } from "react-icons/fa";
 import { MdColorLens } from "react-icons/md";
-import { useMutation } from "@tanstack/react-query";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useProject } from "@/hooks/queries";
+import { api } from "@/lib/api";
 
 interface ProjectsAdminProps {
   isEdit?: boolean;
@@ -38,10 +38,6 @@ export default function ProjectsAdmin({ isEdit = false }: ProjectsAdminProps) {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  const uploadPreset = import.meta.env.VITE_CLOUDINARY_PRESET;
-  const cloudinaryUrl = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 
   // Fetch project data if in edit mode
   const { data: existingProject, isLoading: projectLoading } = useProject(
@@ -68,65 +64,6 @@ export default function ProjectsAdmin({ isEdit = false }: ProjectsAdminProps) {
       setVideoUrl(existingProject.videoUrl || "");
     }
   }, [isEdit, existingProject]);
-
-  const { mutateAsync: submitImage } = useMutation({
-    mutationFn: async () => {
-      try {
-        let uploadedImgs: any[] = [];
-
-        for (let i = 0; i < (imageInput?.length || 0); i++) {
-          const formData = new FormData();
-          formData.append("file", imageInput![i]);
-          formData.append("upload_preset", uploadPreset);
-          formData.append("cloud_name", cloudName);
-          const response = await fetch(cloudinaryUrl, {
-            method: "POST",
-            body: formData,
-          });
-          const data = await response.json();
-          uploadedImgs.push(data);
-        }
-        console.log(imageInput);
-        console.log(uploadedImgs);
-        setAdditionalImageUrls(uploadedImgs.map((img) => img.secure_url));
-        return;
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to upload additional images",
-          variant: "destructive",
-        });
-        throw new Error("Failed to upload additional images");
-      }
-    },
-  });
-
-  const { mutateAsync: submitCoverImage } = useMutation({
-    mutationFn: async () => {
-      try {
-        const formData = new FormData();
-        formData.append("file", coverImg);
-        formData.append("upload_preset", uploadPreset);
-        formData.append("cloud_name", cloudName);
-        const response = await fetch(cloudinaryUrl, {
-          method: "POST",
-          body: formData,
-        });
-        const data = await response.json();
-        setImageUrl(data.secure_url);
-
-        console.log(imageInput);
-        return;
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to upload cover image",
-          variant: "destructive",
-        });
-        throw new Error("Failed to upload cover image");
-      }
-    },
-  });
 
   // Form state
   const [type, setType] = useState<"development" | "design">("development");
@@ -205,8 +142,22 @@ export default function ProjectsAdmin({ isEdit = false }: ProjectsAdminProps) {
     setSubmitting(true);
 
     try {
-      await submitCoverImage();
-      await submitImage();
+      let coverImage = imageUrl;
+
+      if (coverImg) {
+        const upload = await api.uploadImage(coverImg);
+        if (upload.error) throw new Error(upload.error);
+        coverImage = upload.data!.url;
+        setImageUrl(coverImage);
+      }
+
+      const gallery = [...additionalImageUrls];
+      for (const file of Array.from(imageInput || [])) {
+        const upload = await api.uploadImage(file);
+        if (upload.error) throw new Error(upload.error);
+        gallery.push(upload.data!.url);
+      }
+
       const payload = {
         title,
         description,
@@ -216,8 +167,8 @@ export default function ProjectsAdmin({ isEdit = false }: ProjectsAdminProps) {
         date,
         client,
         technologies,
-        image: imageUrl,
-        images: additionalImageUrls,
+        image: coverImage,
+        images: gallery,
         githubUrl,
         liveUrl,
         behanceUrl,
@@ -237,7 +188,8 @@ export default function ProjectsAdmin({ isEdit = false }: ProjectsAdminProps) {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to save project",
+        description:
+          error instanceof Error ? error.message : "Failed to save project",
         variant: "destructive",
       });
     } finally {
